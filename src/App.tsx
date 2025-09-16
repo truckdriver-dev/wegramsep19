@@ -43,9 +43,10 @@ function AppContent() {
 
   // Show auth modal if not authenticated and not loading
   useEffect(() => {
-    if (!loading && !user) {
-      setIsAuthOpen(true);
-    }
+    // Only show auth modal if Supabase is configured
+    // if (!loading && !user) {
+    //   setIsAuthOpen(true);
+    // }
   }, [user, loading]);
 
   const handleAuth = (method: string) => {

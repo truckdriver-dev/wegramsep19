@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { supabase } from '../lib/supabase';
+import { mockPosts } from '../data/mockData';
 
 export interface Post {
   id: string;
@@ -22,10 +23,34 @@ export const usePosts = () => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
+    // If no Supabase, use mock data
+    if (!supabase) {
+      const mockPostsWithProfiles = mockPosts.map(post => ({
+        id: post.id,
+        user_id: post.userId,
+        content: post.content,
+        likes: post.likes,
+        replies: post.replies,
+        shares: post.shares,
+        gifts: post.gifts || 0,
+        created_at: new Date().toISOString(),
+        updated_at: new Date().toISOString(),
+        profiles: {
+          username: post.username.replace('@', ''),
+          avatar_url: null
+        }
+      }));
+      setPosts(mockPostsWithProfiles);
+      setLoading(false);
+      return;
+    }
+
     fetchPosts();
   }, []);
 
   const fetchPosts = async () => {
+    if (!supabase) return;
+    
     try {
       const { data, error } = await supabase
         .from('posts')
@@ -51,6 +76,27 @@ export const usePosts = () => {
   };
 
   const createPost = async (content: string, userId: string) => {
+    if (!supabase) {
+      // Mock post creation
+      const newPost = {
+        id: Date.now().toString(),
+        user_id: userId,
+        content,
+        likes: 0,
+        replies: 0,
+        shares: 0,
+        gifts: 0,
+        created_at: new Date().toISOString(),
+        updated_at: new Date().toISOString(),
+        profiles: {
+          username: 'demo_user',
+          avatar_url: null
+        }
+      };
+      setPosts([newPost, ...posts]);
+      return { data: newPost };
+    }
+
     try {
       const { data, error } = await supabase
         .from('posts')
@@ -81,6 +127,16 @@ export const usePosts = () => {
   };
 
   const likePost = async (postId: string) => {
+    if (!supabase) {
+      // Mock like functionality
+      setPosts(posts.map(p => 
+        p.id === postId 
+          ? { ...p, likes: p.likes + 1 }
+          : p
+      ));
+      return;
+    }
+
     try {
       // Get current post
       const post = posts.find(p => p.id === postId);
@@ -106,6 +162,16 @@ export const usePosts = () => {
   };
 
   const giftPost = async (postId: string) => {
+    if (!supabase) {
+      // Mock gift functionality
+      setPosts(posts.map(p => 
+        p.id === postId 
+          ? { ...p, gifts: p.gifts + 1 }
+          : p
+      ));
+      return;
+    }
+
     try {
       const post = posts.find(p => p.id === postId);
       if (!post) return;

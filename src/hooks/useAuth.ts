@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { User } from '@supabase/supabase-js';
 import { supabase } from '../lib/supabase';
+import { mockUser } from '../data/mockData';
 
 export interface Profile {
   id: string;
@@ -18,6 +19,14 @@ export const useAuth = () => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
+    // If no Supabase, use mock data
+    if (!supabase) {
+      setUser(null);
+      setProfile(null);
+      setLoading(false);
+      return;
+    }
+
     // Get initial session
     supabase.auth.getSession().then(({ data: { session } }) => {
       setUser(session?.user ?? null);
@@ -91,6 +100,10 @@ export const useAuth = () => {
   };
 
   const signInWithGoogle = async () => {
+    if (!supabase) {
+      console.log('Demo mode: Google sign-in simulated');
+      return;
+    }
     const { error } = await supabase.auth.signInWithOAuth({
       provider: 'google',
       options: {
@@ -101,6 +114,10 @@ export const useAuth = () => {
   };
 
   const signInWithEmail = async (email: string, password: string) => {
+    if (!supabase) {
+      console.log('Demo mode: Email sign-in simulated');
+      return { error: null };
+    }
     const { error } = await supabase.auth.signInWithPassword({
       email,
       password,
@@ -110,6 +127,10 @@ export const useAuth = () => {
   };
 
   const signUpWithEmail = async (email: string, password: string) => {
+    if (!supabase) {
+      console.log('Demo mode: Email sign-up simulated');
+      return { error: null };
+    }
     const { error } = await supabase.auth.signUp({
       email,
       password,
@@ -119,6 +140,10 @@ export const useAuth = () => {
   };
 
   const signOut = async () => {
+    if (!supabase) {
+      console.log('Demo mode: Sign-out simulated');
+      return;
+    }
     const { error } = await supabase.auth.signOut();
     if (error) console.error('Error signing out:', error);
   };

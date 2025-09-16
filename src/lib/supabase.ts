@@ -3,16 +3,15 @@ import { createClient } from '@supabase/supabase-js';
 const supabaseUrl = import.meta.env.VITE_SUPABASE_URL;
 const supabaseAnonKey = import.meta.env.VITE_SUPABASE_ANON_KEY;
 
-// Create a dummy client if no credentials are provided
-const createSupabaseClient = () => {
-  if (!supabaseUrl || !supabaseAnonKey) {
-    console.warn('Supabase credentials not found. Running in demo mode with mock data.');
-    return null;
-  }
-  return createClient(supabaseUrl, supabaseAnonKey);
-};
+if (!supabaseUrl || !supabaseAnonKey) {
+  console.warn('⚠️ Supabase credentials not found. Please add them to .env file');
+  console.warn('VITE_SUPABASE_URL=your_project_url');
+  console.warn('VITE_SUPABASE_ANON_KEY=your_anon_key');
+}
 
-export const supabase = createSupabaseClient();
+export const supabase = supabaseUrl && supabaseAnonKey 
+  ? createClient(supabaseUrl, supabaseAnonKey)
+  : null;
 
 // Database Types
 export interface Database {

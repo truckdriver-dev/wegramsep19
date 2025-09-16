@@ -18,6 +18,14 @@ export const supabase = isValidUrl && isValidKey
   ? createClient(supabaseUrl, supabaseAnonKey)
   : null;
 
+// Test connection
+if (supabase) {
+  console.log('✅ Supabase connected successfully!');
+  console.log('Project URL:', supabaseUrl);
+} else {
+  console.log('❌ Supabase not connected - using demo mode');
+}
+
 // Database Types
 export interface Database {
   public: {

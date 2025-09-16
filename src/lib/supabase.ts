@@ -3,13 +3,18 @@ import { createClient } from '@supabase/supabase-js';
 const supabaseUrl = import.meta.env.VITE_SUPABASE_URL;
 const supabaseAnonKey = import.meta.env.VITE_SUPABASE_ANON_KEY;
 
-if (!supabaseUrl || !supabaseAnonKey) {
+// Check if credentials are valid (not just present)
+const isValidUrl = supabaseUrl && supabaseUrl.startsWith('https://') && !supabaseUrl.includes('your_supabase');
+const isValidKey = supabaseAnonKey && supabaseAnonKey.startsWith('eyJ') && !supabaseAnonKey.includes('your_supabase');
+
+if (!isValidUrl || !isValidKey) {
   console.warn('⚠️ Supabase credentials not found. Please add them to .env file');
   console.warn('VITE_SUPABASE_URL=your_project_url');
   console.warn('VITE_SUPABASE_ANON_KEY=your_anon_key');
+  console.warn('App will run in demo mode with mock data.');
 }
 
-export const supabase = supabaseUrl && supabaseAnonKey 
+export const supabase = isValidUrl && isValidKey 
   ? createClient(supabaseUrl, supabaseAnonKey)
   : null;
 

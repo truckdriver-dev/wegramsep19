@@ -5,6 +5,9 @@ import { TrendingUp, Compass, Gamepad2, MessageCircle } from 'lucide-react';
 // Styles
 import './styles/theme.css';
 
+// Hooks
+import { useAuth } from './hooks/useAuth';
+
 // Layout Components
 import { TopBar } from './components/Layout/TopBar';
 import { BottomNav } from './components/Layout/BottomNav';
@@ -31,25 +34,22 @@ import { PlaceholderPage } from './pages/PlaceholderPage';
 
 function AppContent() {
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
-  const [isAuthOpen, setIsAuthOpen] = useState(true); // Show auth on first load
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [isAuthOpen, setIsAuthOpen] = useState(false);
   const [isMessageModalOpen, setIsMessageModalOpen] = useState(false);
   const [messageRecipient, setMessageRecipient] = useState<string | undefined>(undefined);
   const navigate = useNavigate();
 
-  // Auto-hide auth modal after 3 seconds for demo purposes
+  const { user, loading } = useAuth();
+
+  // Show auth modal if not authenticated and not loading
   useEffect(() => {
-    const timer = setTimeout(() => {
-      if (!isAuthenticated) {
-        setIsAuthOpen(false);
-      }
-    }, 3000);
-    return () => clearTimeout(timer);
-  }, [isAuthenticated]);
+    if (!loading && !user) {
+      setIsAuthOpen(true);
+    }
+  }, [user, loading]);
 
   const handleAuth = (method: string) => {
     console.log('Auth method:', method);
-    setIsAuthenticated(true);
     setIsAuthOpen(false);
   };
 

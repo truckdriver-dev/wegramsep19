@@ -1,5 +1,6 @@
 import React from 'react';
 import { X as CloseIcon, Search, Mail, Phone } from 'lucide-react';
+import { useAuth } from '../../hooks/useAuth';
 
 interface AuthModalProps {
   isOpen: boolean;
@@ -8,6 +9,18 @@ interface AuthModalProps {
 }
 
 export const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose, onAuth }) => {
+  const { signInWithGoogle } = useAuth();
+
+  const handleGoogleAuth = async () => {
+    await signInWithGoogle();
+    onAuth('google');
+  };
+
+  const handleEmailAuth = () => {
+    // For now, just close modal - email auth form can be added later
+    onAuth('email');
+  };
+
   if (!isOpen) return null;
 
   return (
@@ -44,7 +57,7 @@ export const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose, onAuth })
 
         <div className="space-y-3">
           <button
-            onClick={() => onAuth('google')}
+            onClick={handleGoogleAuth}
             className="btn-primary w-full flex items-center justify-center gap-3 py-4"
           >
             <Search className="w-5 h-5" />
@@ -58,7 +71,7 @@ export const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose, onAuth })
             Continue with X
           </button>
           <button
-            onClick={() => onAuth('email')}
+            onClick={handleEmailAuth}
             className="btn-primary w-full flex items-center justify-center gap-3 py-4"
           >
             <Mail className="w-5 h-5" />

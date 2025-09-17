@@ -126,12 +126,12 @@ export const Trending: React.FC = () => {
       </div>
 
       {/* Time Filter */}
-      <div className="flex gap-2 mb-6">
+      <div className="flex gap-2 mb-6 overflow-x-auto pb-2 scrollbar-hide">
         {(['1h', '24h', '7d'] as const).map((time) => (
           <button
             key={time}
             onClick={() => setTimeFilter(time)}
-            className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
+            className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors whitespace-nowrap flex-shrink-0 ${
               timeFilter === time
                 ? 'bg-purple-600 text-white'
                 : 'bg-gray-700 text-gray-300 hover:bg-gray-600'

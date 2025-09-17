@@ -80,8 +80,6 @@ export const Staking: React.FC = () => {
       <div className="max-w-md mx-auto px-4 pt-20 pb-24">
         {/* Header */}
         <div className="flex items-center justify-between mb-8">
-                ? 'bg-purple-600 border-purple-600 text-white'
-                : 'border-gray-600 hover:border-purple-400 text-primary'
             className="p-2 hover:bg-gray-700 rounded-lg transition-colors"
           >
             <ArrowLeft className="w-6 h-6 text-primary" />

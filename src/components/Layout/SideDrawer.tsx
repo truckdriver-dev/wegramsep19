@@ -38,14 +38,11 @@ export const SideDrawer: React.FC<SideDrawerProps> = ({ isOpen, onClose }) => {
         {/* Header with logo */}
         <div className="p-6">
           <div className="flex items-center gap-3 mb-8">
-            <div className="w-10 h-10 rounded-xl gradient-bg flex items-center justify-center relative overflow-hidden shadow-2xl border border-purple-400/30">
-              <div className="absolute inset-0 bg-gradient-to-br from-cyan-400/20 via-purple-500/20 to-pink-500/20 animate-pulse"></div>
-              <div className="text-white font-black text-xl tracking-widest transform -skew-x-6 relative z-10 drop-shadow-lg">
-                W
-              </div>
-              <div className="absolute inset-0 bg-gradient-to-tr from-white/30 via-transparent to-cyan-300/20"></div>
-              <div className="absolute -inset-1 bg-gradient-to-r from-cyan-400 via-purple-500 to-pink-500 rounded-xl opacity-20 blur-sm"></div>
-            </div>
+            <img 
+              src="/src/assets/IMAGE 2025-09-16 17:58:35.jpg" 
+              alt="WEGRAM Logo" 
+              className="w-10 h-10 rounded-xl object-cover shadow-2xl border border-purple-400/30"
+            />
             <span className="text-xl font-bold text-primary">WEGRAM</span>
           </div>
 
@@ -76,13 +73,11 @@ export const SideDrawer: React.FC<SideDrawerProps> = ({ isOpen, onClose }) => {
 
         {/* Footer */}
         <div className="absolute bottom-6 left-6 flex items-center gap-2">
-          <div className="w-6 h-6 rounded-lg gradient-bg flex items-center justify-center relative overflow-hidden shadow-lg border border-purple-400/20">
-            <div className="absolute inset-0 bg-gradient-to-br from-cyan-400/15 via-purple-500/15 to-pink-500/15"></div>
-            <div className="text-white font-black text-xs tracking-wider transform -skew-x-3 relative z-10">
-              W
-            </div>
-            <div className="absolute inset-0 bg-gradient-to-tr from-white/25 via-transparent to-cyan-300/15"></div>
-          </div>
+          <img 
+            src="/src/assets/IMAGE 2025-09-16 17:58:35.jpg" 
+            alt="WEGRAM Logo" 
+            className="w-6 h-6 rounded-lg object-cover shadow-lg border border-purple-400/20"
+          />
           <span className="text-xs text-gray-500">v1.3 • prototype</span>
         </div>
       </div>

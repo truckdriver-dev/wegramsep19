@@ -4,10 +4,28 @@ import { PostComposer } from '../components/Post/PostComposer';
 import { PostCard } from '../components/Post/PostCard';
 import { usePosts } from '../hooks/usePosts';
 import { useAuth } from '../hooks/useAuth';
+import { mockPosts } from '../data/mockData';
 
 export const Home: React.FC = () => {
   const { posts, loading, createPost, likePost, giftPost } = usePosts();
   const { user, profile } = useAuth();
+  
+  // For MVP demo - show mock posts if no real posts exist
+  const displayPosts = posts.length > 0 ? posts : mockPosts.map(post => ({
+    id: post.id,
+    user_id: post.userId,
+    content: post.content,
+    likes: post.likes,
+    replies: post.replies,
+    shares: post.shares,
+    gifts: post.gifts || 0,
+    created_at: new Date().toISOString(),
+    updated_at: new Date().toISOString(),
+    profiles: {
+      username: post.username.replace('@', ''),
+      avatar_url: null
+    }
+  }));
 
   const handlePost = async (content: string) => {
     if (!user || !profile) return;
@@ -49,7 +67,7 @@ export const Home: React.FC = () => {
       )}
       
       <div>
-        {posts.map(post => (
+        {displayPosts.map(post => (
           <PostCard
             key={post.id}
             post={{
@@ -57,7 +75,7 @@ export const Home: React.FC = () => {
               userId: post.user_id,
               username: `@${post.profiles.username}`,
               content: post.content,
-              timestamp: new Date(post.created_at).toLocaleDateString(),
+              timestamp: posts.length > 0 ? new Date(post.created_at).toLocaleDateString() : (post as any).timestamp || '2h',
               likes: post.likes,
               replies: post.replies,
               shares: post.shares,

@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { ArrowLeft } from 'lucide-react';
+import { ArrowLeft, Bell, Heart, MessageCircle, Share, UserPlus, Hash, Shield } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 
 export const Notifications: React.FC = () => {
@@ -7,11 +7,11 @@ export const Notifications: React.FC = () => {
   const [settings, setSettings] = useState({
     pushNotifications: true,
     likes: true,
-    reposts: true,
     comments: true,
-    tags: true,
+    shares: true,
     newFollowers: true,
-    whitelist: true
+    mentions: true,
+    directMessages: true
   });
 
   const handleToggle = (setting: keyof typeof settings) => {
@@ -21,131 +21,143 @@ export const Notifications: React.FC = () => {
     }));
   };
 
-  const ToggleSwitch: React.FC<{ enabled: boolean; onToggle: () => void }> = ({ enabled, onToggle }) => (
-    <button
-      onClick={onToggle}
-      className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors ${
-        enabled ? 'bg-purple-600' : 'bg-gray-600'
-      }`}
-    >
-      <span
-        className={`inline-block h-4 w-4 transform rounded-full bg-white transition-transform ${
-          enabled ? 'translate-x-6' : 'translate-x-1'
-        }`}
-      />
-    </button>
-  );
+  const notificationTypes = [
+    {
+      id: 'likes' as keyof typeof settings,
+      title: 'Likes',
+      description: 'When someone likes your posts',
+      icon: Heart,
+      color: 'text-red-400'
+    },
+    {
+      id: 'comments' as keyof typeof settings,
+      title: 'Comments',
+      description: 'When someone comments on your posts',
+      icon: MessageCircle,
+      color: 'text-blue-400'
+    },
+    {
+      id: 'shares' as keyof typeof settings,
+      title: 'Shares',
+      description: 'When someone shares your content',
+      icon: Share,
+      color: 'text-green-400'
+    },
+    {
+      id: 'newFollowers' as keyof typeof settings,
+      title: 'New Followers',
+      description: 'When someone follows you',
+      icon: UserPlus,
+      color: 'text-purple-400'
+    },
+    {
+      id: 'mentions' as keyof typeof settings,
+      title: 'Mentions',
+      description: 'When someone mentions you in a post',
+      icon: Hash,
+      color: 'text-orange-400'
+    },
+    {
+      id: 'directMessages' as keyof typeof settings,
+      title: 'Direct Messages',
+      description: 'When you receive a new message',
+      icon: MessageCircle,
+      color: 'text-cyan-400'
+    }
+  ];
 
   return (
-    <div className="min-h-screen" style={{ backgroundColor: 'var(--bg)', color: 'var(--text)' }}>
-      <div className="max-w-md mx-auto">
-        {/* Header */}
-        <div className="flex items-center gap-4 p-4 pt-16">
-          <button
-            onClick={() => navigate(-1)}
-            className="p-2 hover:bg-gray-700 rounded-lg transition-colors"
-          >
-            <ArrowLeft className="w-6 h-6 text-primary" />
-          </button>
-          <h1 className="text-xl font-bold text-primary">Edit Notifications</h1>
+    <div className="max-w-md mx-auto px-4 pt-20 pb-24">
+      {/* Header */}
+      <div className="flex items-center gap-3 mb-6">
+        <button
+          onClick={() => navigate(-1)}
+          className="p-2 hover:bg-gray-700 rounded-lg transition-colors"
+        >
+          <ArrowLeft className="w-5 h-5" />
+        </button>
+        <div className="w-8 h-8 rounded-lg gradient-bg flex items-center justify-center">
+          <Bell className="w-5 h-5 text-white" />
         </div>
+        <div>
+          <h1 className="text-xl font-bold text-primary">Notifications</h1>
+          <p className="text-secondary text-sm">Manage your notification preferences</p>
+        </div>
+      </div>
 
-        <div className="px-4 pb-24">
-          {/* Push Notifications */}
-          <div className="mb-8">
-            <h2 className="text-lg font-bold text-primary mb-4">PUSH NOTIFICATIONS</h2>
-            <div className="flex items-center justify-between">
-              <div>
-                <p className="text-secondary">
-                  Get push notifications to find out what's going on when you're not on WEGRAM.
-                </p>
-              </div>
-              <ToggleSwitch 
-                enabled={settings.pushNotifications} 
-                onToggle={() => handleToggle('pushNotifications')} 
-              />
+      {/* Push Notifications Master Toggle */}
+      <div className="card mb-6">
+        <div className="flex items-center justify-between">
+          <div className="flex items-center gap-3">
+            <div className="w-10 h-10 rounded-full bg-purple-600 bg-opacity-20 flex items-center justify-center">
+              <Bell className="w-5 h-5 text-purple-400" />
+            </div>
+            <div>
+              <h3 className="text-primary font-semibold">Push Notifications</h3>
+              <p className="text-secondary text-sm">Enable all notifications</p>
             </div>
           </div>
+          <button
+            onClick={() => handleToggle('pushNotifications')}
+            className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors ${
+              settings.pushNotifications ? 'bg-purple-600' : 'bg-gray-600'
+            }`}
+          >
+            <span
+              className={`inline-block h-4 w-4 transform rounded-full bg-white transition-transform ${
+                settings.pushNotifications ? 'translate-x-6' : 'translate-x-1'
+              }`}
+            />
+          </button>
+        </div>
+      </div>
 
-          {/* Customize Notifications */}
-          <div className="mb-6">
-            <h3 className="text-lg font-semibold text-primary mb-6">
-              Customize who you get notifications from:
-            </h3>
-
-            <div className="space-y-6">
-              {/* Likes */}
-              <div>
-                <h4 className="text-base font-bold text-primary mb-2">LIKES</h4>
-                <div className="flex items-center justify-between">
-                  <span className="text-secondary">Only from accounts I follow</span>
-                  <ToggleSwitch 
-                    enabled={settings.likes} 
-                    onToggle={() => handleToggle('likes')} 
-                  />
+      {/* Notification Types */}
+      <div className="space-y-4">
+        {notificationTypes.map((type) => {
+          const Icon = type.icon;
+          return (
+            <div key={type.id} className="card">
+              <div className="flex items-center justify-between">
+                <div className="flex items-center gap-3">
+                  <div className={`w-10 h-10 rounded-full bg-opacity-20 flex items-center justify-center ${type.color.replace('text-', 'bg-').replace('-400', '-600')}`}>
+                    <Icon className={`w-5 h-5 ${type.color}`} />
+                  </div>
+                  <div>
+                    <h3 className="text-primary font-medium">{type.title}</h3>
+                    <p className="text-secondary text-sm">{type.description}</p>
+                  </div>
                 </div>
-              </div>
-
-              {/* Reposts */}
-              <div>
-                <h4 className="text-base font-bold text-primary mb-2">REPOSTS</h4>
-                <div className="flex items-center justify-between">
-                  <span className="text-secondary">Only from accounts I follow</span>
-                  <ToggleSwitch 
-                    enabled={settings.reposts} 
-                    onToggle={() => handleToggle('reposts')} 
+                <button
+                  onClick={() => handleToggle(type.id)}
+                  disabled={!settings.pushNotifications}
+                  className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors ${
+                    settings[type.id] && settings.pushNotifications 
+                      ? 'bg-purple-600' 
+                      : 'bg-gray-600'
+                  } ${!settings.pushNotifications ? 'opacity-50' : ''}`}
+                >
+                  <span
+                    className={`inline-block h-4 w-4 transform rounded-full bg-white transition-transform ${
+                      settings[type.id] && settings.pushNotifications ? 'translate-x-6' : 'translate-x-1'
+                    }`}
                   />
-                </div>
-              </div>
-
-              {/* Comments */}
-              <div>
-                <h4 className="text-base font-bold text-primary mb-2">COMMENTS</h4>
-                <div className="flex items-center justify-between">
-                  <span className="text-secondary">Only from accounts I follow</span>
-                  <ToggleSwitch 
-                    enabled={settings.comments} 
-                    onToggle={() => handleToggle('comments')} 
-                  />
-                </div>
-              </div>
-
-              {/* Tags */}
-              <div>
-                <h4 className="text-base font-bold text-primary mb-2">TAGS</h4>
-                <div className="flex items-center justify-between">
-                  <span className="text-secondary">Only from accounts I follow</span>
-                  <ToggleSwitch 
-                    enabled={settings.tags} 
-                    onToggle={() => handleToggle('tags')} 
-                  />
-                </div>
-              </div>
-
-              {/* New Followers */}
-              <div>
-                <h4 className="text-base font-bold text-primary mb-2">NEW FOLLOWERS</h4>
-                <div className="flex items-center justify-between">
-                  <span className="text-secondary">Only from accounts I follow</span>
-                  <ToggleSwitch 
-                    enabled={settings.newFollowers} 
-                    onToggle={() => handleToggle('newFollowers')} 
-                  />
-                </div>
-              </div>
-
-              {/* Whitelist */}
-              <div>
-                <h4 className="text-base font-bold text-primary mb-2">WHITELIST</h4>
-                <div className="flex items-center justify-between">
-                  <span className="text-secondary">Only from accounts I follow</span>
-                  <ToggleSwitch 
-                    enabled={settings.whitelist} 
-                    onToggle={() => handleToggle('whitelist')} 
-                  />
-                </div>
+                </button>
               </div>
             </div>
+          );
+        })}
+      </div>
+
+      {/* Privacy Notice */}
+      <div className="mt-8 card bg-purple-600 bg-opacity-10 border-purple-600">
+        <div className="flex items-start gap-3">
+          <Shield className="w-5 h-5 text-purple-400 mt-0.5" />
+          <div>
+            <h4 className="text-purple-400 font-semibold mb-2">Privacy & Control</h4>
+            <p className="text-purple-200 text-sm">
+              You have full control over your notifications. Changes take effect immediately and you can modify these settings anytime.
+            </p>
           </div>
         </div>
       </div>

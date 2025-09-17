@@ -262,9 +262,17 @@ export const Wallet: React.FC = () => {
               <div key={token.symbol} className="card">
                 <div className="flex items-center justify-between">
                   <div className="flex items-center gap-4">
-                    <div className="w-12 h-12 rounded-full bg-gray-700 flex items-center justify-center text-2xl">
-                      {token.logo}
-                    </div>
+                    {token.symbol === 'USDC' ? (
+                      <div className="w-12 h-12 rounded-full bg-gray-700 flex items-center justify-center text-2xl">
+                        {token.logo}
+                      </div>
+                    ) : (
+                      <img 
+                        src={token.logo}
+                        alt={token.name} 
+                        className="w-12 h-12 rounded-full object-cover"
+                      />
+                    )}
                     <div>
                       <h3 className="text-primary font-semibold">{token.symbol}</h3>
                       <p className="text-secondary text-sm">{token.name}</p>

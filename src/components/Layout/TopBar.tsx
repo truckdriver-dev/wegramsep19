@@ -1,13 +1,13 @@
 import React from 'react';
-import { Search, Bell, MessageCircle } from 'lucide-react';
+import { Search, MessageCircle, Gift } from 'lucide-react';
 
 interface TopBarProps {
   onMenuClick: () => void;
-  onAIClick: () => void;
+  onGiftClick: () => void;
   onMessageClick: () => void;
 }
 
-export const TopBar: React.FC<TopBarProps> = ({ onMenuClick, onAIClick, onMessageClick }) => {
+export const TopBar: React.FC<TopBarProps> = ({ onMenuClick, onGiftClick, onMessageClick }) => {
   return (
     <div className="fixed top-0 left-0 right-0 z-50 bg-opacity-95 backdrop-blur-sm" style={{ backgroundColor: 'var(--bg)' }}>
       <div className="max-w-md mx-auto px-4 py-3 flex items-center gap-3">
@@ -37,7 +37,11 @@ export const TopBar: React.FC<TopBarProps> = ({ onMenuClick, onAIClick, onMessag
         {/* Right Icons */}
         <div className="flex items-center gap-2">
           <button className="p-2 hover:bg-gray-800 rounded-lg transition-colors relative">
-            <Bell className="w-5 h-5" />
+            {/* Custom notification bell icon */}
+            <svg className="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+              <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/>
+              <path d="M13.73 21a2 2 0 0 1-3.46 0"/>
+            </svg>
             <div className="absolute top-1 right-1 w-2 h-2 bg-purple-500 rounded-full"></div>
           </button>
           <button 
@@ -48,9 +52,9 @@ export const TopBar: React.FC<TopBarProps> = ({ onMenuClick, onAIClick, onMessag
           </button>
         </div>
 
-        {/* AI Dot */}
-        <button onClick={onAIClick} className="ai-dot">
-          AI
+        {/* Gift Button */}
+        <button onClick={onGiftClick} className="p-2 hover:bg-gray-800 rounded-lg transition-colors">
+          <Gift className="w-5 h-5 text-purple-400" />
         </button>
       </div>
     </div>

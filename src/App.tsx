@@ -59,8 +59,8 @@ function AppContent() {
     setIsAuthOpen(false);
   };
 
-  const handleAIClick = () => {
-    navigate('/ai');
+  const handleGiftClick = () => {
+    navigate('/rewards');
   };
 
   const handleMessageClick = () => {
@@ -77,7 +77,7 @@ function AppContent() {
     <div className="min-h-screen" style={{ backgroundColor: 'var(--bg)', color: 'var(--text)' }}>
       <TopBar 
         onMenuClick={() => setIsDrawerOpen(true)}
-        onAIClick={handleAIClick}
+        onGiftClick={handleGiftClick}
         onMessageClick={handleMessageClick}
       />
       

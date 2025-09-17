@@ -23,6 +23,7 @@ export const SideDrawer: React.FC<SideDrawerProps> = ({ isOpen, onClose }) => {
     { id: 'video', label: 'Video', icon: Play, path: '/video' },
     { id: 'ai', label: 'Wegram AI', icon: Bot, path: '/ai' },
     { id: 'livestream', label: 'Livestream', icon: Video, path: '/livestream' },
+    { id: 'launch-token', label: 'Launch Your Token', icon: Coins, path: '/launch-token' },
     { id: 'buy-wegram', label: 'Buy Wegram', icon: ShoppingCart, path: '/buy-wegram' }
   ];
 

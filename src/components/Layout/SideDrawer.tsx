@@ -71,15 +71,6 @@ export const SideDrawer: React.FC<SideDrawerProps> = ({ isOpen, onClose }) => {
           })}
         </div>
 
-        {/* Footer */}
-        <div className="absolute bottom-6 left-6 flex items-center gap-2">
-          <img 
-            src="/src/assets/IMAGE 2025-09-16 17:58:35.jpg" 
-            alt="WEGRAM Logo" 
-            className="w-6 h-6 rounded-lg object-cover shadow-lg border border-purple-400/20"
-          />
-          <span className="text-xs text-gray-500">v1.3 • prototype</span>
-        </div>
       </div>
       
       {/* Right side content area */}
@@ -116,7 +107,6 @@ export const SideDrawer: React.FC<SideDrawerProps> = ({ isOpen, onClose }) => {
         <div className="p-4">
           <div className="text-center text-gray-500 mt-20">
             <p>🚀 — real web3</p>
-            <p>v1.3 • prototype</p>
           </div>
         </div>
       </div>

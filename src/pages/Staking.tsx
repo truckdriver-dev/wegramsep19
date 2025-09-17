@@ -278,6 +278,5 @@ export const Staking: React.FC = () => {
           </div>
         </div>
       </div>
-    </div>
   );
 };

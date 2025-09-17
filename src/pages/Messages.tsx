@@ -181,7 +181,7 @@ export const Messages: React.FC = () => {
             <button className="p-2 hover:bg-gray-700 rounded-lg transition-colors">
               <Camera className="w-5 h-5 text-secondary" />
             </button>
-            <button className="w-10 h-10 rounded-full bg-gradient-to-r from-green-500 to-emerald-500 flex items-center justify-center hover:scale-105 transition-transform">
+            <button className="w-10 h-10 rounded-full bg-gradient-to-r from-purple-500 to-purple-600 flex items-center justify-center hover:scale-105 transition-transform">
               <Plus className="w-5 h-5 text-white" />
             </button>
           </div>
@@ -205,7 +205,7 @@ export const Messages: React.FC = () => {
               onClick={() => setActiveFilter(filter.id as any)}
               className={`px-4 py-2 rounded-full text-sm font-medium transition-colors whitespace-nowrap flex-shrink-0 min-w-fit ${
                 activeFilter === filter.id
-                  ? 'bg-gradient-to-r from-green-500 to-emerald-500 text-white'
+                  ? 'bg-gradient-to-r from-purple-500 to-purple-600 text-white'
                   : 'bg-gray-700 bg-opacity-50 text-gray-300 hover:bg-gray-600'
               }`}
             >
@@ -245,7 +245,7 @@ export const Messages: React.FC = () => {
                 {message.avatar}
               </div>
               {message.isOnline && (
-                <div className="absolute bottom-0 right-0 w-3.5 h-3.5 bg-green-500 rounded-full border-2 border-gray-900"></div>
+                <div className="absolute bottom-0 right-0 w-3.5 h-3.5 bg-cyan-400 rounded-full border-2 border-gray-900"></div>
               )}
             </div>
 
@@ -263,7 +263,7 @@ export const Messages: React.FC = () => {
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-2 flex-1 min-w-0">
                   {message.hasVideo && (
-                    <Video className="w-4 h-4 text-green-400 flex-shrink-0" />
+                    <Video className="w-4 h-4 text-cyan-400 flex-shrink-0" />
                   )}
                   {message.hasSticker && (
                     <span className="text-sm flex-shrink-0">🎨</span>
@@ -276,7 +276,7 @@ export const Messages: React.FC = () => {
                   </p>
                 </div>
                 {message.unread > 0 && (
-                  <div className="w-5 h-5 bg-gradient-to-r from-green-500 to-emerald-500 rounded-full flex items-center justify-center flex-shrink-0 ml-2">
+                  <div className="w-5 h-5 bg-gradient-to-r from-purple-500 to-purple-600 rounded-full flex items-center justify-center flex-shrink-0 ml-2">
                     <span className="text-white text-xs font-bold">{message.unread}</span>
                   </div>
                 )}

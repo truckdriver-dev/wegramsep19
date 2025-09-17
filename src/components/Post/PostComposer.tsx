@@ -14,7 +14,6 @@ export const PostComposer: React.FC<PostComposerProps> = ({
 }) => {
   const [content, setContent] = useState('');
   const [selectedFiles, setSelectedFiles] = useState<File[]>([]);
-  const [showMediaOptions, setShowMediaOptions] = useState(false);
 
   const handlePost = () => {
     if (content.trim()) {
@@ -43,11 +42,40 @@ export const PostComposer: React.FC<PostComposerProps> = ({
   const handleReset = () => {
     setContent('');
     setSelectedFiles([]);
-    setShowMediaOptions(false);
   };
   return (
     <div className="card mb-6">
       <h3 className="text-primary font-semibold mb-4">Create Post</h3>
+      
+      {/* Post Type Options */}
+      <div className="flex gap-2 mb-4">
+        <div className="flex items-center gap-2 px-3 py-2 bg-gray-700 rounded-lg">
+          <span className="text-2xl">📝</span>
+          <span className="text-primary text-sm font-medium">Text</span>
+        </div>
+        <label className="flex items-center gap-2 px-3 py-2 bg-gray-700 hover:bg-gray-600 rounded-lg cursor-pointer transition-colors">
+          <span className="text-2xl">📷</span>
+          <span className="text-primary text-sm font-medium">Photo</span>
+          <input
+            type="file"
+            accept="image/*"
+            multiple
+            onChange={handleFileSelect}
+            className="hidden"
+          />
+        </label>
+        <label className="flex items-center gap-2 px-3 py-2 bg-gray-700 hover:bg-gray-600 rounded-lg cursor-pointer transition-colors">
+          <span className="text-2xl">🎥</span>
+          <span className="text-primary text-sm font-medium">Video</span>
+          <input
+            type="file"
+            accept="video/*"
+            multiple
+            onChange={handleFileSelect}
+            className="hidden"
+          />
+        </label>
+      </div>
       
       <textarea
         value={content}
@@ -88,48 +116,9 @@ export const PostComposer: React.FC<PostComposerProps> = ({
         </div>
       )}
 
-      {/* Media Options */}
-      {showMediaOptions && (
-        <div className="mb-4 p-3 bg-gray-800 bg-opacity-50 rounded-lg">
-          <div className="flex gap-3">
-            <label className="flex items-center gap-2 px-3 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg cursor-pointer transition-colors">
-              <Image className="w-4 h-4" />
-              <span className="text-sm">Photo</span>
-              <input
-                type="file"
-                accept="image/*"
-                multiple
-                onChange={handleFileSelect}
-                className="hidden"
-              />
-            </label>
-            <label className="flex items-center gap-2 px-3 py-2 bg-purple-600 hover:bg-purple-700 text-white rounded-lg cursor-pointer transition-colors">
-              <Video className="w-4 h-4" />
-              <span className="text-sm">Video</span>
-              <input
-                type="file"
-                accept="video/*"
-                multiple
-                onChange={handleFileSelect}
-                className="hidden"
-              />
-            </label>
-          </div>
-        </div>
-      )}
 
       {/* Action Buttons */}
       <div className="flex gap-3">
-        <button
-          onClick={() => setShowMediaOptions(!showMediaOptions)}
-          className={`px-4 py-2 rounded-lg transition-colors ${
-            showMediaOptions 
-              ? 'bg-purple-600 text-white' 
-              : 'bg-gray-700 hover:bg-gray-600 text-primary'
-          }`}
-        >
-          <Upload className="w-4 h-4" />
-        </button>
         <button
           onClick={handlePost}
           className="btn-primary flex-1"

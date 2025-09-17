@@ -13,6 +13,7 @@ export const SideDrawer: React.FC<SideDrawerProps> = ({ isOpen, onClose }) => {
   const menuItems = [
     { id: 'home', label: 'Home', icon: Home, path: '/' },
     { id: 'landing', label: 'Landing', icon: Compass, path: '/landing' },
+    { id: 'launch-token', label: 'Launch Your Token', icon: Coins, path: '/launch-token' },
     { id: 'trending', label: 'Trending', icon: TrendingUp, path: '/trending' },
     { id: 'bookmarks', label: 'Bookmarks', icon: Bookmark, path: '/bookmarks' },
     { id: 'explore', label: 'Explore', icon: Compass, path: '/explore' },
@@ -23,7 +24,6 @@ export const SideDrawer: React.FC<SideDrawerProps> = ({ isOpen, onClose }) => {
     { id: 'video', label: 'Video', icon: Play, path: '/video' },
     { id: 'ai', label: 'Wegram AI', icon: Bot, path: '/ai' },
     { id: 'livestream', label: 'Livestream', icon: Video, path: '/livestream' },
-    { id: 'launch-token', label: 'Launch Your Token', icon: Coins, path: '/launch-token' },
     { id: 'buy-wegram', label: 'Buy Wegram', icon: ShoppingCart, path: '/buy-wegram' }
   ];
 

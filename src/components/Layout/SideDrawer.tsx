@@ -1,5 +1,5 @@
 import React from 'react';
-import { X, Home, TrendingUp, Compass, Gamepad2, MessageCircle, Gift, Bot, Video, Bell, RotateCcw, Grid3X3, Bookmark } from 'lucide-react';
+import { X, Home, TrendingUp, Compass, Gamepad2, MessageCircle, Gift, Bot, Video, Bell, RotateCcw, Grid3X3, Bookmark, Coins, Play, ShoppingCart } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 
 interface SideDrawerProps {
@@ -16,11 +16,14 @@ export const SideDrawer: React.FC<SideDrawerProps> = ({ isOpen, onClose }) => {
     { id: 'trending', label: 'Trending', icon: TrendingUp, path: '/trending' },
     { id: 'bookmarks', label: 'Bookmarks', icon: Bookmark, path: '/bookmarks' },
     { id: 'explore', label: 'Explore', icon: Compass, path: '/explore' },
+    { id: 'staking', label: 'Staking', icon: Coins, path: '/staking' },
     { id: 'games', label: 'Games', icon: Gamepad2, path: '/games' },
     { id: 'messages', label: 'Messages', icon: MessageCircle, path: '/messages' },
     { id: 'rewards', label: 'Rewards', icon: Gift, path: '/rewards' },
+    { id: 'video', label: 'Video', icon: Play, path: '/video' },
     { id: 'ai', label: 'Wegram AI', icon: Bot, path: '/ai' },
-    { id: 'livestream', label: 'Livestream', icon: Video, path: '/livestream' }
+    { id: 'livestream', label: 'Livestream', icon: Video, path: '/livestream' },
+    { id: 'buy-wegram', label: 'Buy Wegram', icon: ShoppingCart, path: '/buy-wegram' }
   ];
 
   const handleItemClick = (path: string) => {

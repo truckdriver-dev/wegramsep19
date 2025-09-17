@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { BrowserRouter as Router, Routes, Route, useNavigate } from 'react-router-dom';
-import { TrendingUp, Compass, Gamepad2, MessageCircle } from 'lucide-react';
+import { TrendingUp, Compass, Gamepad2, MessageCircle, Coins, Play, ShoppingCart } from 'lucide-react';
 
 // Styles
 import './styles/theme.css';
@@ -104,6 +104,9 @@ function AppContent() {
           <Route path="/user/:username" element={<UserProfile />} />
           
           {/* Pages that need to be built */}
+          <Route path="/staking" element={<PlaceholderPage title="Staking" description="Stake your WEGRAM tokens to earn rewards" icon={Coins} />} />
+          <Route path="/video" element={<PlaceholderPage title="Video" description="Watch and share videos on WEGRAM" icon={Play} />} />
+          <Route path="/buy-wegram" element={<PlaceholderPage title="Buy WEGRAM" description="Purchase WEGRAM tokens" icon={ShoppingCart} />} />
         </Routes>
       </main>
 

@@ -21,9 +21,11 @@ export const Landing: React.FC = () => {
             <div className="flex flex-col items-center">
               <div className="relative mb-4">
                 {/* WEGRAM Logo */}
-                <div className="w-32 h-32 rounded-full gradient-bg flex items-center justify-center shadow-2xl border-4 border-purple-400/30">
-                  <span className="text-white font-bold text-4xl">W</span>
-                </div>
+                <img 
+                  src="https://i.ibb.co/TxdWc0kL/IMG-9101.jpg" 
+                  alt="WEGRAM Logo" 
+                  className="w-32 h-32 rounded-full object-cover shadow-2xl border-4 border-purple-400/30"
+                />
               </div>
               
               {/* WEGRAM Text */}

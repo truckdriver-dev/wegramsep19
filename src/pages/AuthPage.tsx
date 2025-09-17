@@ -42,13 +42,11 @@ export const AuthPage: React.FC = () => {
 
         {/* WEGRAM Logo */}
         <div className="mb-8">
-          <div className="w-24 h-24 bg-black rounded-lg flex items-center justify-center">
-            <img 
-              src="/src/assets/IMAGE 2025-09-16 17:58:35.jpg" 
-              alt="WEGRAM Logo" 
-              className="w-20 h-20 rounded-lg object-cover"
-            />
-          </div>
+          <img 
+            src="https://i.ibb.co/TxdWc0kL/IMG-9101.jpg" 
+            alt="WEGRAM Logo" 
+            className="w-24 h-24 rounded-lg object-cover shadow-lg"
+          />
         </div>
 
         {/* Main Text */}

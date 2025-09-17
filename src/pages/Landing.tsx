@@ -115,6 +115,13 @@ export const Landing: React.FC = () => {
           >
             Log-in using email
           </button>
+          <span className="text-gray-400"> or </span>
+          <button 
+            onClick={() => navigate('/')}
+            className="text-white underline hover:text-gray-300 transition-colors"
+          >
+            Enter as guest
+          </button>
         </div>
 
         {/* Terms */}

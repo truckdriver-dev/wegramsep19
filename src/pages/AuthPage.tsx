@@ -84,6 +84,13 @@ export const AuthPage: React.FC = () => {
           >
             Cancel
           </button>
+          
+          <button
+            onClick={() => navigate('/')}
+            className="w-full text-gray-500 hover:text-gray-600 font-medium py-2 px-6 text-sm transition-colors"
+          >
+            Enter as guest
+          </button>
         </div>
       </div>
 

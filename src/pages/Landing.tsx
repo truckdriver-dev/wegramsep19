@@ -9,7 +9,12 @@ export const Landing: React.FC = () => {
   };
 
   const handleEmailLogin = () => {
-    // For now, just navigate to main app
+    // Navigate to main app
+    navigate('/home');
+  };
+
+  const handleGuestEntry = () => {
+    // Navigate directly to main app as guest
     navigate('/home');
   };
 
@@ -117,7 +122,7 @@ export const Landing: React.FC = () => {
           </button>
           <span className="text-gray-400"> or </span>
           <button 
-            onClick={() => navigate('/')}
+            onClick={handleGuestEntry}
             className="text-white underline hover:text-gray-300 transition-colors"
           >
             Enter as guest

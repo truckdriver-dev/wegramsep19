@@ -77,10 +77,10 @@ export const Staking: React.FC = () => {
 
   return (
     <div className="min-h-screen" style={{ backgroundColor: 'var(--bg)', color: 'var(--text)' }}>
-      <div className="max-w-md mx-auto px-4 pt-20 pb-24">
-        {/* Header */}
-        <div className="flex items-center justify-between mb-8">
+          <button
+            onClick={() => navigate(-1)}
             className="p-2 hover:bg-gray-700 rounded-lg transition-colors"
+          >
           >
             <ArrowLeft className="w-6 h-6 text-primary" />
           </button>

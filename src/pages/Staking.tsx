@@ -102,8 +102,12 @@ export const Staking: React.FC = () => {
           
           {/* Token Input Section */}
           <div className="flex items-center gap-4 mb-6">
-            <div className="w-12 h-12 rounded-full gradient-bg flex items-center justify-center">
-              <DollarSign className="w-6 h-6 text-white" />
+            <div className="w-12 h-12 rounded-full bg-gray-700 flex items-center justify-center">
+              <img 
+                src="https://i.ibb.co/TxdWc0kL/IMG-9101.jpg"
+                alt="WEGRAM Logo" 
+                className="w-8 h-8 rounded-full object-cover"
+              />
             </div>
             <div className="text-xl font-semibold text-primary">$WGM</div>
             <input

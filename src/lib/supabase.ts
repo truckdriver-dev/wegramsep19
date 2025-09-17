@@ -4,16 +4,17 @@ const supabaseUrl = import.meta.env.VITE_SUPABASE_URL;
 const supabaseAnonKey = import.meta.env.VITE_SUPABASE_ANON_KEY;
 
 // Create Supabase client if credentials are available
-export const supabase = supabaseUrl && supabaseAnonKey 
+export const supabase = supabaseUrl && supabaseAnonKey && 
+  supabaseUrl !== 'your_supabase_project_url' && 
+  supabaseAnonKey !== 'your_supabase_anon_key'
   ? createClient(supabaseUrl, supabaseAnonKey)
   : null;
 
-// Test connection
+// Connection status
 if (supabase) {
   console.log('✅ Supabase connected successfully!');
-  console.log('Project URL:', supabaseUrl);
 } else {
-  console.log('❌ Supabase not connected - using demo mode');
+  console.log('📋 Demo mode - Add your Supabase credentials to .env to enable database features');
 }
 
 // Database Types

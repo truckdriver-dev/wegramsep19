@@ -80,12 +80,12 @@ function AppContent() {
     navigate('/notifications');
   };
 
-  // Don't show TopBar and BottomNav on landing page
-  const isLandingPage = location.pathname === '/';
+  // Don't show TopBar and BottomNav on landing and auth pages
+  const hideNavigation = location.pathname === '/' || location.pathname === '/auth';
 
   return (
     <div className="min-h-screen" style={{ backgroundColor: 'var(--bg)', color: 'var(--text)' }}>
-      {!isLandingPage && (
+      {!hideNavigation && (
         <TopBar 
           onMenuClick={() => setIsDrawerOpen(true)}
           onGiftClick={handleGiftClick}
@@ -127,7 +127,7 @@ function AppContent() {
         </Routes>
       </main>
 
-      {!isLandingPage && <BottomNav />}
+      {!hideNavigation && <BottomNav />}
       
       <SideDrawer 
         isOpen={isDrawerOpen}

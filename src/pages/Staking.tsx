@@ -201,9 +201,11 @@ export const Staking: React.FC = () => {
             </div>
             <div className="flex items-center gap-3">
               <div className="flex items-center gap-2">
-                <div className="w-6 h-6 rounded-full gradient-bg flex items-center justify-center text-xs font-bold text-white">
-                  W
-                </div>
+                <img 
+                  src="https://i.ibb.co/TxdWc0kL/IMG-9101.jpg"
+                  alt="WEGRAM" 
+                  className="w-6 h-6 rounded-full object-cover"
+                />
                 <span className="text-primary">WGM</span>
               </div>
               <span className="text-secondary">→</span>

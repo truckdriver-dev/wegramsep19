@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Heart, MessageCircle, Share, Bookmark, User, Play, Volume2, VolumeX } from 'lucide-react';
+import { Heart, MessageCircle, Share, Bookmark, User, Play, Volume2, VolumeX, Plus, Upload, X, Camera } from 'lucide-react';
 
 interface VideoPost {
   id: string;
@@ -16,6 +16,13 @@ interface VideoPost {
 }
 
 export const Video: React.FC = () => {
+  const [videos] = useState<VideoPost[]>([
+  const [showUploadModal, setShowUploadModal] = useState(false);
+  const [uploadFile, setUploadFile] = useState<File | null>(null);
+  const [uploadTitle, setUploadTitle] = useState('');
+  const [uploadDescription, setUploadDescription] = useState('');
+  const [isUploading, setIsUploading] = useState(false);
+
   const [videos] = useState<VideoPost[]>([
     {
       id: '1',
@@ -123,6 +130,48 @@ export const Video: React.FC = () => {
     alert('Video shared! 📤');
   };
 
+  const handleUploadVideo = () => {
+    setShowUploadModal(true);
+  };
+
+  const handleFileSelect = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0];
+    if (file) {
+      // Check if it's a video file
+      if (file.type.startsWith('video/')) {
+        setUploadFile(file);
+      } else {
+        alert('Please select a video file');
+      }
+    }
+  };
+
+  const handleUploadSubmit = async () => {
+    if (!uploadFile || !uploadTitle.trim()) {
+      alert('Please select a video and enter a title');
+      return;
+    }
+
+    setIsUploading(true);
+    
+    // Simulate upload process
+    setTimeout(() => {
+      alert('Video uploaded successfully! 🎉');
+      setShowUploadModal(false);
+      setUploadFile(null);
+      setUploadTitle('');
+      setUploadDescription('');
+      setIsUploading(false);
+    }, 2000);
+  };
+
+  const handleCloseUpload = () => {
+    setShowUploadModal(false);
+    setUploadFile(null);
+    setUploadTitle('');
+    setUploadDescription('');
+  };
+
   const handleFollow = (username: string) => {
     alert(`Now following ${username}! ✨`);
   };
@@ -132,8 +181,16 @@ export const Video: React.FC = () => {
       <div className="max-w-md mx-auto">
         {/* Header */}
         <div className="px-4 mb-6">
-          <h1 className="text-2xl font-bold text-primary mb-2">Videos</h1>
-          <p className="text-secondary text-sm">Discover Web3 content</p>
+          <div className="flex items-center justify-between mb-2">
+            <h1 className="text-2xl font-bold text-primary">Videos</h1>
+            <button
+              onClick={handleUploadVideo}
+              className="w-10 h-10 rounded-full bg-gradient-to-r from-purple-500 to-purple-600 flex items-center justify-center hover:scale-105 transition-transform"
+            >
+              <Plus className="w-5 h-5 text-white" />
+            </button>
+          </div>
+          <p className="text-secondary text-sm">Discover and share Web3 content</p>
         </div>
 
         {/* Video Feed */}
@@ -279,6 +336,122 @@ export const Video: React.FC = () => {
           </button>
         </div>
       </div>
+
+      {/* Upload Modal */}
+      {showUploadModal && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
+          {/* Backdrop */}
+          <div className="absolute inset-0 bg-black bg-opacity-75" onClick={handleCloseUpload} />
+          
+          {/* Modal */}
+          <div className="relative card max-w-sm w-full">
+            <div className="flex items-center justify-between mb-6">
+              <h2 className="text-xl font-bold text-primary">Upload Video</h2>
+              <button
+                onClick={handleCloseUpload}
+                className="p-2 hover:bg-gray-700 rounded-lg transition-colors"
+              >
+                <X className="w-5 h-5" />
+              </button>
+            </div>
+
+            {/* File Upload */}
+            <div className="mb-6">
+              <label className="block text-secondary text-sm mb-2">Select Video</label>
+              {!uploadFile ? (
+                <label className="flex flex-col items-center justify-center w-full h-32 border-2 border-dashed border-gray-600 rounded-lg cursor-pointer hover:border-purple-400 transition-colors">
+                  <div className="flex flex-col items-center justify-center pt-5 pb-6">
+                    <Upload className="w-8 h-8 mb-2 text-gray-400" />
+                    <p className="text-sm text-gray-400">Click to upload video</p>
+                    <p className="text-xs text-gray-500">MP4, MOV, AVI up to 100MB</p>
+                  </div>
+                  <input
+                    type="file"
+                    accept="video/*"
+                    onChange={handleFileSelect}
+                    className="hidden"
+                  />
+                </label>
+              ) : (
+                <div className="flex items-center justify-between p-3 bg-gray-800 rounded-lg">
+                  <div className="flex items-center gap-3">
+                    <Camera className="w-5 h-5 text-purple-400" />
+                    <div>
+                      <div className="text-primary font-medium">{uploadFile.name}</div>
+                      <div className="text-secondary text-sm">
+                        {(uploadFile.size / (1024 * 1024)).toFixed(1)} MB
+                      </div>
+                    </div>
+                  </div>
+                  <button
+                    onClick={() => setUploadFile(null)}
+                    className="p-1 hover:bg-gray-700 rounded transition-colors"
+                  >
+                    <X className="w-4 h-4" />
+                  </button>
+            {/* Title */}
+            <div className="mb-4">
+              <label className="block text-secondary text-sm mb-2">Title</label>
+              <input
+                type="text"
+                value={uploadTitle}
+                onChange={(e) => setUploadTitle(e.target.value)}
+                placeholder="Enter video title..."
+                className="input"
+                maxLength={100}
+              />
+            </div>
+                </div>
+            {/* Description */}
+            <div className="mb-6">
+              <label className="block text-secondary text-sm mb-2">Description</label>
+              <textarea
+                value={uploadDescription}
+                onChange={(e) => setUploadDescription(e.target.value)}
+                placeholder="Describe your video..."
+                className="input resize-none h-20"
+                maxLength={500}
+              />
+            </div>
+              )}
+            {/* Upload Button */}
+            <div className="space-y-3">
+              <button
+                onClick={handleUploadSubmit}
+                className="btn-primary w-full py-4 text-lg font-semibold flex items-center justify-center gap-3"
+                disabled={!uploadFile || !uploadTitle.trim() || isUploading}
+              >
+                {isUploading ? (
+                  <>
+                    <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
+                    Uploading...
+                  </>
+                ) : (
+                  <>
+                    <Upload className="w-5 h-5" />
+                    Upload Video
+                  </>
+                )}
+              </button>
+              
+              <button
+                onClick={handleCloseUpload}
+                className="btn-secondary w-full py-3"
+                disabled={isUploading}
+              >
+                Cancel
+              </button>
+            </div>
+            </div>
+            {/* Info */}
+            <div className="mt-4 p-3 bg-purple-600 bg-opacity-10 rounded-lg">
+              <p className="text-purple-400 text-xs text-center">
+                📹 Video processing and Web3 integration coming soon
+              </p>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };

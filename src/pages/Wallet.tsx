@@ -91,14 +91,14 @@ export const Wallet: React.FC = () => {
       name: 'Wegram',
       balance: 1247.89,
       usdValue: 623.95,
-      logo: '🔷'
+      logo: 'https://i.ibb.co/TxdWc0kL/IMG-9101.jpg'
     },
     {
       symbol: 'SOL',
       name: 'Solana',
       balance: 2.45,
       usdValue: 367.50,
-      logo: '◎'
+      logo: 'https://upload.wikimedia.org/wikipedia/en/b/b9/Solana_logo.png'
     },
     {
       symbol: 'USDC',
@@ -132,6 +132,11 @@ export const Wallet: React.FC = () => {
             <div>
               <h3 className="text-secondary text-sm mb-2">Wallet Balance</h3>
               <div className="flex items-center gap-2">
+                <img 
+                  src="https://i.ibb.co/TxdWc0kL/IMG-9101.jpg"
+                  alt="WEGRAM" 
+                  className="w-6 h-6 rounded-full object-cover"
+                />
                 <span className="text-3xl font-bold text-primary">${totalUsdValue.toFixed(0)}</span>
                 <button className="p-1 hover:bg-gray-700 rounded transition-colors">
                   <RefreshCw className="w-4 h-4 text-secondary" />
@@ -196,7 +201,11 @@ export const Wallet: React.FC = () => {
             <div>
               <h3 className="text-white font-semibold mb-2">Pending Rewards</h3>
               <div className="flex items-center gap-2">
-                <span className="text-2xl">🔷</span>
+                <img 
+                  src="https://i.ibb.co/TxdWc0kL/IMG-9101.jpg"
+                  alt="WEGRAM" 
+                  className="w-8 h-8 rounded-full object-cover"
+                />
                 <span className="text-white text-2xl font-bold">{pendingRewards}</span>
               </div>
             </div>

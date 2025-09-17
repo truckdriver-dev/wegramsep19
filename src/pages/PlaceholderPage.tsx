@@ -1,6 +1,7 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { ArrowLeft } from 'lucide-react';
+import { BuyWegram } from './BuyWegram';
 
 interface PlaceholderPageProps {
   title: string;
@@ -14,6 +15,11 @@ export const PlaceholderPage: React.FC<PlaceholderPageProps> = ({
   icon: Icon 
 }) => {
   const navigate = useNavigate();
+
+  // If this is the Buy WEGRAM page, render the actual component
+  if (title === 'Buy WEGRAM') {
+    return <BuyWegram />;
+  }
 
   return (
     <div className="max-w-md mx-auto px-4 pt-20 pb-24">

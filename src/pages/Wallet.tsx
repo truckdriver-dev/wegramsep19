@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { 
   ArrowUp, 
   ArrowDown, 
@@ -12,16 +12,48 @@ import {
   Activity,
   Ticket
 } from 'lucide-react';
-import { useWallet } from '../hooks/useWallet';
-import { useAuth } from '../hooks/useAuth';
+import { SolanaWallet, WalletData } from '../utils/solanaWallet';
+
+interface Token {
+  symbol: string;
+  name: string;
+  balance: number;
+  usdValue: number;
+  logo: string;
+}
 
 export const Wallet: React.FC = () => {
-  const { user, profile } = useAuth();
-  const { wallet, balances, totalUsdValue, loading, addReward } = useWallet();
+  const [walletData, setWalletData] = useState<WalletData | null>(null);
   const [activeTab, setActiveTab] = useState<'tokens' | 'tickets' | 'activity'>('tokens');
   const [showPrivateKey, setShowPrivateKey] = useState(false);
   const [copiedItem, setCopiedItem] = useState<string | null>(null);
+  const [walletBalance] = useState(0);
+  const [earnings] = useState(0);
   const [pendingRewards] = useState(156.78);
+
+  const solanaWallet = new SolanaWallet();
+
+  // Auto-create wallet for every user
+  useEffect(() => {
+    const storedWallet = localStorage.getItem('wegram_wallet');
+    if (storedWallet) {
+      try {
+        const wallet = JSON.parse(storedWallet);
+        setWalletData(wallet);
+      } catch (error) {
+        console.error('Failed to load stored wallet:', error);
+        createNewWallet();
+      }
+    } else {
+      createNewWallet();
+    }
+  }, []);
+
+  const createNewWallet = () => {
+    const wallet = solanaWallet.generateWallet();
+    setWalletData(wallet);
+    localStorage.setItem('wegram_wallet', JSON.stringify(wallet));
+  };
 
   const handleCopy = (text: string, item: string) => {
     navigator.clipboard?.writeText(text);
@@ -30,8 +62,8 @@ export const Wallet: React.FC = () => {
   };
 
   const handleDeposit = () => {
-    if (wallet) {
-      handleCopy(wallet.public_key, 'deposit');
+    if (walletData) {
+      handleCopy(walletData.publicKey, 'deposit');
       alert('Wallet address copied! Share this to receive tokens');
     }
   };
@@ -48,25 +80,36 @@ export const Wallet: React.FC = () => {
     alert('More wallet features coming soon!');
   };
 
-  const handleClaimRewards = async () => {
-    await addReward(pendingRewards, 'WGR');
+  const handleClaimRewards = () => {
     alert(`🎉 Claimed ${pendingRewards} WGR tokens!`);
   };
 
-  if (loading) {
-    return (
-      <div className="min-h-screen flex items-center justify-center" style={{ backgroundColor: 'var(--bg)' }}>
-        <div className="text-center">
-          <div className="animate-spin w-8 h-8 border-2 border-purple-500 border-t-transparent rounded-full mx-auto mb-4"></div>
-          <p className="text-secondary">Setting up your wallet...</p>
-        </div>
-      </div>
-    );
-  }
+  // Mock tokens data
+  const tokens: Token[] = [
+    {
+      symbol: 'WGR',
+      name: 'Wegram',
+      balance: 1247.89,
+      usdValue: 623.95,
+      logo: '🔷'
+    },
+    {
+      symbol: 'SOL',
+      name: 'Solana',
+      balance: 2.45,
+      usdValue: 367.50,
+      logo: '◎'
+    },
+    {
+      symbol: 'USDC',
+      name: 'USD Coin',
+      balance: 150.00,
+      usdValue: 150.00,
+      logo: '💵'
+    }
+  ];
 
-  // Calculate earnings (WGR balance for demo)
-  const wgrBalance = balances.find(b => b.token_symbol === 'WGR');
-  const earnings = wgrBalance ? wgrBalance.usd_value : 0;
+  const totalUsdValue = tokens.reduce((sum, token) => sum + token.usdValue, 0);
 
   return (
     <div className="min-h-screen" style={{ backgroundColor: 'var(--bg)' }}>
@@ -79,12 +122,8 @@ export const Wallet: React.FC = () => {
               <span className="text-white font-bold text-lg">W</span>
             </div>
             <div>
-              <h2 className="text-xl font-bold text-primary">
-                {profile?.username || 'WeGram'}
-              </h2>
-              <p className="text-secondary text-sm">
-                @{profile?.username || 'TheWegramApp'}
-              </p>
+              <h2 className="text-xl font-bold text-primary">WeGram</h2>
+              <p className="text-secondary text-sm">@TheWegramApp</p>
             </div>
           </div>
 
@@ -102,7 +141,7 @@ export const Wallet: React.FC = () => {
             <div>
               <h3 className="text-secondary text-sm mb-2">Earnings</h3>
               <div className="flex items-center gap-2">
-                <span className="text-3xl font-bold text-primary">${earnings.toFixed(0)}</span>
+                <span className="text-3xl font-bold text-primary">${earnings}</span>
                 <button className="p-1 hover:bg-gray-700 rounded transition-colors">
                   <RefreshCw className="w-4 h-4 text-secondary" />
                 </button>
@@ -210,22 +249,21 @@ export const Wallet: React.FC = () => {
         {/* Content based on active tab */}
         {activeTab === 'tokens' && (
           <div className="space-y-3">
-            {balances.map((token) => (
-              <div key={token.token_symbol} className="card">
+            {tokens.map((token) => (
+              <div key={token.symbol} className="card">
                 <div className="flex items-center justify-between">
                   <div className="flex items-center gap-4">
                     <div className="w-12 h-12 rounded-full bg-gray-700 flex items-center justify-center text-2xl">
-                      {token.token_symbol === 'WGR' ? '🔷' : 
-                       token.token_symbol === 'SOL' ? '◎' : '💵'}
+                      {token.logo}
                     </div>
                     <div>
-                      <h3 className="text-primary font-semibold">{token.token_symbol}</h3>
-                      <p className="text-secondary text-sm">{token.token_name}</p>
+                      <h3 className="text-primary font-semibold">{token.symbol}</h3>
+                      <p className="text-secondary text-sm">{token.name}</p>
                     </div>
                   </div>
                   <div className="text-right">
                     <div className="text-primary font-bold">{token.balance.toFixed(4)}</div>
-                    <div className="text-secondary text-sm">${token.usd_value.toFixed(2)}</div>
+                    <div className="text-secondary text-sm">${token.usdValue.toFixed(2)}</div>
                   </div>
                 </div>
               </div>
@@ -250,7 +288,7 @@ export const Wallet: React.FC = () => {
         )}
 
         {/* Wallet Details (Collapsible) */}
-        {wallet && (
+        {walletData && (
           <div className="mt-8 card">
             <div className="flex items-center justify-between mb-4">
               <h3 className="text-primary font-semibold">Wallet Details</h3>
@@ -262,14 +300,14 @@ export const Wallet: React.FC = () => {
               <div className="flex items-center justify-between mb-2">
                 <span className="text-secondary text-sm">Wallet Address</span>
                 <button
-                  onClick={() => handleCopy(wallet.public_key, 'address')}
+                  onClick={() => handleCopy(walletData.publicKey, 'address')}
                   className="p-1 hover:bg-gray-600 rounded transition-colors"
                 >
                   {copiedItem === 'address' ? <Check className="w-4 h-4 text-green-400" /> : <Copy className="w-4 h-4" />}
                 </button>
               </div>
               <div className="p-3 bg-black bg-opacity-30 rounded-lg font-mono text-xs text-primary break-all">
-                {wallet.public_key}
+                {walletData.publicKey}
               </div>
             </div>
 
@@ -285,7 +323,7 @@ export const Wallet: React.FC = () => {
                     {showPrivateKey ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
                   </button>
                   <button
-                    onClick={() => handleCopy(wallet.private_key_encrypted, 'privateKey')}
+                    onClick={() => handleCopy(walletData.privateKey, 'privateKey')}
                     className="p-1 hover:bg-gray-600 rounded transition-colors"
                   >
                     {copiedItem === 'privateKey' ? <Check className="w-4 h-4 text-green-400" /> : <Copy className="w-4 h-4" />}
@@ -293,24 +331,24 @@ export const Wallet: React.FC = () => {
                 </div>
               </div>
               <div className="p-3 bg-black bg-opacity-30 rounded-lg font-mono text-xs text-primary break-all">
-                {showPrivateKey ? wallet.private_key_encrypted : '•'.repeat(88)}
+                {showPrivateKey ? walletData.privateKey : '•'.repeat(88)}
               </div>
             </div>
 
             {/* Recovery Phrase */}
-            {wallet.mnemonic_encrypted && (
+            {walletData.mnemonic && (
               <div>
                 <div className="flex items-center justify-between mb-2">
                   <span className="text-secondary text-sm">Recovery Phrase</span>
                   <button
-                    onClick={() => handleCopy(wallet.mnemonic_encrypted!, 'mnemonic')}
+                    onClick={() => handleCopy(walletData.mnemonic!, 'mnemonic')}
                     className="p-1 hover:bg-gray-600 rounded transition-colors"
                   >
                     {copiedItem === 'mnemonic' ? <Check className="w-4 h-4 text-green-400" /> : <Copy className="w-4 h-4" />}
                   </button>
                 </div>
                 <div className="p-3 bg-black bg-opacity-30 rounded-lg text-xs text-primary">
-                  {wallet.mnemonic_encrypted}
+                  {walletData.mnemonic}
                 </div>
               </div>
             )}

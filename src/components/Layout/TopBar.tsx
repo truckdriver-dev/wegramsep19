@@ -1,13 +1,14 @@
 import React from 'react';
-import { Search, MessageCircle, Gift } from 'lucide-react';
+import { Search, MessageCircle, Gift, Bell } from 'lucide-react';
 
 interface TopBarProps {
   onMenuClick: () => void;
   onGiftClick: () => void;
   onMessageClick: () => void;
+  onNotificationClick: () => void;
 }
 
-export const TopBar: React.FC<TopBarProps> = ({ onMenuClick, onGiftClick, onMessageClick }) => {
+export const TopBar: React.FC<TopBarProps> = ({ onMenuClick, onGiftClick, onMessageClick, onNotificationClick }) => {
   return (
     <div className="fixed top-0 left-0 right-0 z-50 bg-opacity-95 backdrop-blur-sm" style={{ backgroundColor: 'var(--bg)' }}>
       <div className="max-w-md mx-auto px-4 py-3 flex items-center gap-3">
@@ -36,11 +37,11 @@ export const TopBar: React.FC<TopBarProps> = ({ onMenuClick, onGiftClick, onMess
 
         {/* Right Icons */}
         <div className="flex items-center gap-2">
-          <button className="p-2 hover:bg-gray-700 rounded-lg transition-colors relative">
-            {/* Notification bell icon matching the Arena.social style with WEGRAM colors */}
-            <svg className="w-5 h-5 text-gray-400" viewBox="0 0 24 24" fill="currentColor">
-              <path d="M12 2C13.1 2 14 2.9 14 4C14 4.74 13.6 5.39 13 5.73V7C16.86 7.5 20 10.9 20 15V18L22 20V21H2V20L4 18V15C4 10.9 7.14 7.5 11 7V5.73C10.4 5.39 10 4.74 10 4C10 2.9 10.9 2 12 2ZM7.5 22C7.5 23.11 8.39 24 9.5 24H14.5C15.61 24 16.5 23.11 16.5 22H7.5Z"/>
-            </svg>
+          <button 
+            onClick={onNotificationClick}
+            className="p-2 hover:bg-gray-700 rounded-lg transition-colors relative"
+          >
+            <Bell className="w-5 h-5 text-gray-400" />
             <div className="absolute top-1 right-1 w-2 h-2 bg-purple-500 rounded-full animate-pulse"></div>
           </button>
           <button 

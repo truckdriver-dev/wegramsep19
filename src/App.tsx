@@ -36,6 +36,7 @@ import { Bookmarks } from './pages/Bookmarks';
 import { PlaceholderPage } from './pages/PlaceholderPage';
 import { Staking } from './pages/Staking';
 import { BuyWegram } from './pages/BuyWegram';
+import { Notifications } from './pages/Notifications';
 
 function AppContent() {
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
@@ -73,12 +74,16 @@ function AppContent() {
     setIsMessageModalOpen(true);
   };
 
+  const handleNotificationClick = () => {
+    navigate('/notifications');
+  };
   return (
     <div className="min-h-screen" style={{ backgroundColor: 'var(--bg)', color: 'var(--text)' }}>
       <TopBar 
         onMenuClick={() => setIsDrawerOpen(true)}
         onGiftClick={handleGiftClick}
         onMessageClick={handleMessageClick}
+        onNotificationClick={handleNotificationClick}
       />
       
       <main className="min-h-screen">
@@ -109,6 +114,7 @@ function AppContent() {
           <Route path="/staking" element={<Staking />} />
           <Route path="/video" element={<PlaceholderPage title="Video" description="Watch and share videos on WEGRAM" icon={Play} />} />
           <Route path="/buy-wegram" element={<BuyWegram />} />
+          <Route path="/notifications" element={<Notifications />} />
         </Routes>
       </main>
 

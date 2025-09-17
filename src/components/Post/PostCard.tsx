@@ -1,5 +1,5 @@
 import React from 'react';
-import { Heart, MessageCircle, Share, MoreHorizontal, Gift, Bookmark } from 'lucide-react';
+import { Heart, MessageCircle, Share, MoreHorizontal, Gift, Bookmark, Smile, Link, Copy, Flag } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { Post } from '../../data/mockData';
 
@@ -14,6 +14,7 @@ interface PostCardProps {
 
 export const PostCard: React.FC<PostCardProps> = ({ post, onLike, onReply, onShare, onGift, onBookmark }) => {
   const navigate = useNavigate();
+  const [showMenu, setShowMenu] = React.useState(false);
 
   const handleAvatarClick = () => {
     navigate(`/user/${post.username}`);
@@ -26,6 +27,30 @@ export const PostCard: React.FC<PostCardProps> = ({ post, onLike, onReply, onSha
   const handleBookmark = () => {
     onBookmark?.(post.id);
   };
+
+  const handlePostReactions = () => {
+    setShowMenu(false);
+    alert('Post reactions feature coming soon! 😍');
+  };
+
+  const handleCopyLink = () => {
+    const postUrl = `https://wegram.com/post/${post.id}`;
+    navigator.clipboard?.writeText(postUrl);
+    setShowMenu(false);
+    alert('Post link copied to clipboard! 🔗');
+  };
+
+  const handleCopyText = () => {
+    navigator.clipboard?.writeText(post.content);
+    setShowMenu(false);
+    alert('Post text copied to clipboard! 📋');
+  };
+
+  const handleReportPost = () => {
+    setShowMenu(false);
+    alert('Post reported. Thank you for keeping WEGRAM safe! 🛡️');
+  };
+
   return (
     <div className="card mb-4">
       <div className="flex items-start justify-between mb-3">
@@ -42,9 +67,61 @@ export const PostCard: React.FC<PostCardProps> = ({ post, onLike, onReply, onSha
             <div className="text-secondary text-sm">{post.timestamp}</div>
           </div>
         </div>
-        <button className="p-1 hover:bg-gray-700 rounded transition-colors">
-          <MoreHorizontal className="w-4 h-4" />
-        </button>
+        <div className="relative">
+          <button 
+            onClick={() => setShowMenu(!showMenu)}
+            className="p-1 hover:bg-gray-700 rounded transition-colors"
+          >
+            <MoreHorizontal className="w-4 h-4" />
+          </button>
+          
+          {showMenu && (
+            <>
+              {/* Backdrop */}
+              <div 
+                className="fixed inset-0 z-10" 
+                onClick={() => setShowMenu(false)}
+              />
+              
+              {/* Menu */}
+              <div className="absolute right-0 top-8 z-20 bg-gray-800 border border-gray-700 rounded-lg shadow-lg py-2 min-w-48">
+                <button
+                  onClick={handlePostReactions}
+                  className="w-full flex items-center gap-3 px-4 py-2 text-left hover:bg-gray-700 transition-colors text-primary"
+                >
+                  <Smile className="w-4 h-4 text-yellow-400" />
+                  <span>Post reactions</span>
+                </button>
+                
+                <button
+                  onClick={handleCopyLink}
+                  className="w-full flex items-center gap-3 px-4 py-2 text-left hover:bg-gray-700 transition-colors text-primary"
+                >
+                  <Link className="w-4 h-4 text-blue-400" />
+                  <span>Copy link</span>
+                </button>
+                
+                <button
+                  onClick={handleCopyText}
+                  className="w-full flex items-center gap-3 px-4 py-2 text-left hover:bg-gray-700 transition-colors text-primary"
+                >
+                  <Copy className="w-4 h-4 text-green-400" />
+                  <span>Copy text</span>
+                </button>
+                
+                <div className="border-t border-gray-700 my-1"></div>
+                
+                <button
+                  onClick={handleReportPost}
+                  className="w-full flex items-center gap-3 px-4 py-2 text-left hover:bg-gray-700 transition-colors text-red-400"
+                >
+                  <Flag className="w-4 h-4" />
+                  <span>Report post</span>
+                </button>
+              </div>
+            </>
+          )}
+        </div>
       </div>
 
       <p className="text-primary mb-4 leading-relaxed">{post.content}</p>

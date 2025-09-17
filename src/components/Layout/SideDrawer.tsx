@@ -104,13 +104,6 @@ export const SideDrawer: React.FC<SideDrawerProps> = ({ isOpen, onClose }) => {
         <button className="ai-dot">
           AI
         </button>
-        
-        {/* Sample content */}
-        <div className="p-4">
-          <div className="text-center text-gray-500 mt-20">
-            <p>🚀 — real web3</p>
-          </div>
-        </div>
       </div>
     </div>
   );

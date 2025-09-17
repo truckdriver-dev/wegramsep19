@@ -8,11 +8,11 @@ export const Compose: React.FC = () => {
   const handlePost = (content: string) => {
     // Database integration coming soon
     console.log('New post:', content);
-    navigate('/');
+    navigate('/home');
   };
 
   const handleCancel = () => {
-    navigate('/');
+    navigate('/home');
   };
 
   return (

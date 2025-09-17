@@ -11,8 +11,8 @@ export const SideDrawer: React.FC<SideDrawerProps> = ({ isOpen, onClose }) => {
   const navigate = useNavigate();
 
   const menuItems = [
-    { id: 'home', label: 'Home', icon: Home, path: '/' },
-    { id: 'landing', label: 'Landing', icon: Compass, path: '/landing' },
+    { id: 'home', label: 'Home', icon: Home, path: '/home' },
+    { id: 'landing', label: 'Landing', icon: Compass, path: '/' },
     { id: 'launch-token', label: 'Launch Your Token', icon: Coins, path: '/launch-token' },
     { id: 'trending', label: 'Trending', icon: TrendingUp, path: '/trending' },
     { id: 'bookmarks', label: 'Bookmarks', icon: Bookmark, path: '/bookmarks' },

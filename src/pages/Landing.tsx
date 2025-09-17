@@ -10,7 +10,7 @@ export const Landing: React.FC = () => {
 
   const handleEmailLogin = () => {
     // For now, just navigate to main app
-    navigate('/');
+    navigate('/home');
   };
 
   return (

@@ -89,9 +89,9 @@ function AppContent() {
       
       <main className="min-h-screen">
         <Routes>
-          <Route path="/landing" element={<Landing />} />
+          <Route path="/" element={<Landing />} />
           <Route path="/auth" element={<AuthPage />} />
-          <Route path="/" element={<Home />} />
+          <Route path="/home" element={<Home />} />
           <Route path="/profile" element={<Profile />} />
           <Route path="/analytics" element={<Analytics />} />
           <Route path="/compose" element={<Compose />} />

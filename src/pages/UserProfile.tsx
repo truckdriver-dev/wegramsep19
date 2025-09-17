@@ -122,7 +122,7 @@ export const UserProfile: React.FC = () => {
   const [isMessageModalOpen, setIsMessageModalOpen] = useState(false);
   
   if (!username) {
-    navigate('/');
+    navigate('/home');
     return null;
   }
 

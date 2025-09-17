@@ -25,7 +25,7 @@ export const PlaceholderPage: React.FC<PlaceholderPageProps> = ({
     <div className="max-w-md mx-auto px-4 pt-20 pb-24">
       <div className="card text-center">
         <button 
-          onClick={() => navigate('/')}
+          onClick={() => navigate('/home')}
           className="mb-6 p-2 hover:bg-gray-700 rounded-lg transition-colors"
         >
           <ArrowLeft className="w-5 h-5" />

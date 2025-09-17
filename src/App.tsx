@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { BrowserRouter as Router, Routes, Route, useNavigate } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, useNavigate, useLocation } from 'react-router-dom';
 import { TrendingUp, Compass, Gamepad2, MessageCircle, Coins, Play, ShoppingCart } from 'lucide-react';
 
 // Styles
@@ -46,6 +46,7 @@ function AppContent() {
   const [isMessageModalOpen, setIsMessageModalOpen] = useState(false);
   const [messageRecipient, setMessageRecipient] = useState<string | undefined>(undefined);
   const navigate = useNavigate();
+  const location = useLocation();
 
   const { user, loading } = useAuth();
 
@@ -78,14 +79,20 @@ function AppContent() {
   const handleNotificationClick = () => {
     navigate('/notifications');
   };
+
+  // Don't show TopBar and BottomNav on landing page
+  const isLandingPage = location.pathname === '/';
+
   return (
     <div className="min-h-screen" style={{ backgroundColor: 'var(--bg)', color: 'var(--text)' }}>
-      <TopBar 
-        onMenuClick={() => setIsDrawerOpen(true)}
-        onGiftClick={handleGiftClick}
-        onMessageClick={handleMessageClick}
-        onNotificationClick={handleNotificationClick}
-      />
+      {!isLandingPage && (
+        <TopBar 
+          onMenuClick={() => setIsDrawerOpen(true)}
+          onGiftClick={handleGiftClick}
+          onMessageClick={handleMessageClick}
+          onNotificationClick={handleNotificationClick}
+        />
+      )}
       
       <main className="min-h-screen">
         <Routes>
@@ -120,7 +127,7 @@ function AppContent() {
         </Routes>
       </main>
 
-      <BottomNav />
+      {!isLandingPage && <BottomNav />}
       
       <SideDrawer 
         isOpen={isDrawerOpen}

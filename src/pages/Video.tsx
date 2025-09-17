@@ -16,7 +16,6 @@ interface VideoPost {
 }
 
 export const Video: React.FC = () => {
-  const [videos] = useState<VideoPost[]>([
   const [showUploadModal, setShowUploadModal] = useState(false);
   const [uploadFile, setUploadFile] = useState<File | null>(null);
   const [uploadTitle, setUploadTitle] = useState('');
@@ -389,6 +388,10 @@ export const Video: React.FC = () => {
                   >
                     <X className="w-4 h-4" />
                   </button>
+                </div>
+              )}
+            </div>
+
             {/* Title */}
             <div className="mb-4">
               <label className="block text-secondary text-sm mb-2">Title</label>
@@ -401,7 +404,7 @@ export const Video: React.FC = () => {
                 maxLength={100}
               />
             </div>
-                </div>
+
             {/* Description */}
             <div className="mb-6">
               <label className="block text-secondary text-sm mb-2">Description</label>
@@ -413,7 +416,7 @@ export const Video: React.FC = () => {
                 maxLength={500}
               />
             </div>
-              )}
+
             {/* Upload Button */}
             <div className="space-y-3">
               <button
@@ -442,7 +445,7 @@ export const Video: React.FC = () => {
                 Cancel
               </button>
             </div>
-            </div>
+
             {/* Info */}
             <div className="mt-4 p-3 bg-purple-600 bg-opacity-10 rounded-lg">
               <p className="text-purple-400 text-xs text-center">

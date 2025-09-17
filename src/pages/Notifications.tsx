@@ -97,18 +97,20 @@ export const Notifications: React.FC = () => {
               <p className="text-secondary text-sm">Enable all notifications</p>
             </div>
           </div>
-          <button
+          <div 
             onClick={() => handleToggle('pushNotifications')}
-            className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors ${
-              settings.pushNotifications ? 'bg-purple-600' : 'bg-gray-600'
+            className={`relative w-12 h-6 rounded-full cursor-pointer transition-all duration-300 ${
+              settings.pushNotifications 
+                ? 'bg-gradient-to-r from-purple-500 to-purple-600 shadow-lg shadow-purple-500/30' 
+                : 'bg-gray-600'
             }`}
           >
-            <span
-              className={`inline-block h-4 w-4 transform rounded-full bg-white transition-transform ${
-                settings.pushNotifications ? 'translate-x-6' : 'translate-x-1'
+            <div
+              className={`absolute top-0.5 w-5 h-5 bg-white rounded-full shadow-md transition-all duration-300 transform ${
+                settings.pushNotifications ? 'translate-x-6' : 'translate-x-0.5'
               }`}
             />
-          </button>
+          </div>
         </div>
       </div>
 
@@ -128,21 +130,22 @@ export const Notifications: React.FC = () => {
                     <p className="text-secondary text-sm">{type.description}</p>
                   </div>
                 </div>
-                <button
-                  onClick={() => handleToggle(type.id)}
-                  disabled={!settings.pushNotifications}
-                  className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors ${
-                    settings[type.id] && settings.pushNotifications 
-                      ? 'bg-purple-600' 
-                      : 'bg-gray-600'
-                  } ${!settings.pushNotifications ? 'opacity-50' : ''}`}
+                <div 
+                  onClick={() => settings.pushNotifications && handleToggle(type.id)}
+                  className={`relative w-12 h-6 rounded-full transition-all duration-300 ${
+                    !settings.pushNotifications 
+                      ? 'bg-gray-700 opacity-50 cursor-not-allowed' 
+                      : settings[type.id]
+                      ? 'bg-gradient-to-r from-purple-500 to-purple-600 shadow-lg shadow-purple-500/30 cursor-pointer' 
+                      : 'bg-gray-600 cursor-pointer hover:bg-gray-500'
+                  }`}
                 >
-                  <span
-                    className={`inline-block h-4 w-4 transform rounded-full bg-white transition-transform ${
-                      settings[type.id] && settings.pushNotifications ? 'translate-x-6' : 'translate-x-1'
+                  <div
+                    className={`absolute top-0.5 w-5 h-5 bg-white rounded-full shadow-md transition-all duration-300 transform ${
+                      settings[type.id] && settings.pushNotifications ? 'translate-x-6' : 'translate-x-0.5'
                     }`}
                   />
-                </button>
+                </div>
               </div>
             </div>
           );

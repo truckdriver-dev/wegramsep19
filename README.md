@@ -272,12 +272,12 @@ Simply update the data hooks in `src/hooks/` to connect to your preferred backen
 ### **Prerequisites**
 - Node.js 18+ installed
 - A Supabase account (free tier available)
-- Basic knowledge of React (optional)
+- Git installed on your system
 
 ### **Installation**
 ```bash
 # Clone the repository
-git clone <your-repository-url>
+git clone https://github.com/your-username/wegram.git
 cd wegram
 
 # Install dependencies

@@ -1,96 +1,58 @@
 import React, { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
 import { 
-  Wallet as WalletIcon, 
-  Copy, 
+  ArrowUp, 
+  ArrowDown, 
+  RefreshCw, 
+  Plus,
+  Copy,
   Check,
-  ArrowLeft,
-  X,
-  Loader,
-  Send,
-  Download,
   Eye,
   EyeOff,
-  Plus
+  Settings,
+  Activity,
+  Ticket
 } from 'lucide-react';
 import { SolanaWallet, WalletData } from '../utils/solanaWallet';
 
+interface Token {
+  symbol: string;
+  name: string;
+  balance: number;
+  usdValue: number;
+  logo: string;
+}
+
 export const Wallet: React.FC = () => {
-  const navigate = useNavigate();
-  const [hasWallet, setHasWallet] = useState(false);
-  const [currentWallet, setCurrentWallet] = useState<WalletData | null>(null);
-  const [copiedItem, setCopiedItem] = useState<string | null>(null);
+  const [walletData, setWalletData] = useState<WalletData | null>(null);
+  const [activeTab, setActiveTab] = useState<'tokens' | 'tickets' | 'activity'>('tokens');
   const [showPrivateKey, setShowPrivateKey] = useState(false);
-  const [balance] = useState(0);
-  const [showWalletSetup, setShowWalletSetup] = useState(false);
-  const [setupStep, setSetupStep] = useState<'choose' | 'create' | 'import'>('choose');
-  const [importKey, setImportKey] = useState('');
-  const [isLoading, setIsLoading] = useState(false);
+  const [copiedItem, setCopiedItem] = useState<string | null>(null);
+  const [walletBalance] = useState(0);
+  const [earnings] = useState(0);
+  const [pendingRewards] = useState(156.78);
 
   const solanaWallet = new SolanaWallet();
 
-  // Initialize wallet state - start with no wallet
+  // Auto-create wallet for every user
   useEffect(() => {
-    const storedWallet = localStorage.getItem('solana_wallet');
+    const storedWallet = localStorage.getItem('wegram_wallet');
     if (storedWallet) {
       try {
         const wallet = JSON.parse(storedWallet);
-        setCurrentWallet(wallet);
-        setHasWallet(true);
+        setWalletData(wallet);
       } catch (error) {
         console.error('Failed to load stored wallet:', error);
-        localStorage.removeItem('solana_wallet');
-        setHasWallet(false);
-        setCurrentWallet(null);
+        createNewWallet();
       }
     } else {
-      setHasWallet(false);
-      setCurrentWallet(null);
+      createNewWallet();
     }
   }, []);
 
-  const generateWallet = () => {
-    setIsLoading(true);
+  const createNewWallet = () => {
     const wallet = solanaWallet.generateWallet();
-    setCurrentWallet(wallet);
-    setSetupStep('create');
-    setIsLoading(false);
-  };
-
-  const importWallet = () => {
-    if (!importKey.trim()) {
-      alert('Please enter your private key or recovery phrase');
-      return;
-    }
-    
-    setIsLoading(true);
-    
-    // Try importing as private key first, then as mnemonic
-    let wallet = solanaWallet.importFromPrivateKey(importKey.trim());
-    if (!wallet) {
-      wallet = solanaWallet.importFromMnemonic(importKey.trim());
-    }
-    
-    if (wallet) {
-      setCurrentWallet(wallet);
-      localStorage.setItem('solana_wallet', JSON.stringify(wallet));
-      setHasWallet(true);
-      setShowWalletSetup(false);
-      setImportKey('');
-    } else {
-      alert('Invalid private key or recovery phrase. Please check and try again.');
-    }
-    
-    setIsLoading(false);
-  };
-
-  const finishWalletSetup = () => {
-    if (currentWallet) {
-      localStorage.setItem('solana_wallet', JSON.stringify(currentWallet));
-      setHasWallet(true);
-      setShowWalletSetup(false);
-      setSetupStep('choose');
-    }
+    setWalletData(wallet);
+    localStorage.setItem('wegram_wallet', JSON.stringify(wallet));
   };
 
   const handleCopy = (text: string, item: string) => {
@@ -99,356 +61,300 @@ export const Wallet: React.FC = () => {
     setTimeout(() => setCopiedItem(null), 2000);
   };
 
-  const handleSend = () => {
-    alert('Send feature requires blockchain integration');
-  };
-
-  const handleReceive = () => {
-    if (currentWallet) {
-      handleCopy(currentWallet.publicKey, 'receive');
-      alert('Wallet address copied! Share this to receive SOL');
+  const handleDeposit = () => {
+    if (walletData) {
+      handleCopy(walletData.publicKey, 'deposit');
+      alert('Wallet address copied! Share this to receive tokens');
     }
   };
 
+  const handleWithdraw = () => {
+    alert('Withdraw feature coming soon! Connect to DEX integration.');
+  };
+
+  const handleSwap = () => {
+    alert('Swap feature coming soon! DEX integration in development.');
+  };
+
+  const handleMore = () => {
+    alert('More wallet features coming soon!');
+  };
+
+  const handleClaimRewards = () => {
+    alert(`🎉 Claimed ${pendingRewards} WGR tokens!`);
+  };
+
+  // Mock tokens data
+  const tokens: Token[] = [
+    {
+      symbol: 'WGR',
+      name: 'Wegram',
+      balance: 1247.89,
+      usdValue: 623.95,
+      logo: '🔷'
+    },
+    {
+      symbol: 'SOL',
+      name: 'Solana',
+      balance: 2.45,
+      usdValue: 367.50,
+      logo: '◎'
+    },
+    {
+      symbol: 'USDC',
+      name: 'USD Coin',
+      balance: 150.00,
+      usdValue: 150.00,
+      logo: '💵'
+    }
+  ];
+
+  const totalUsdValue = tokens.reduce((sum, token) => sum + token.usdValue, 0);
+
   return (
-    <div className="max-w-md mx-auto px-4 pt-20 pb-32 min-h-screen overflow-y-auto">
-      {/* Header */}
-      <div className="flex items-center gap-3 mb-6">
-        <button
-          onClick={() => navigate(-1)}
-          className="p-2 hover:bg-gray-700 rounded-lg transition-colors"
-        >
-          <ArrowLeft className="w-5 h-5" />
-        </button>
-        <div className="flex items-center gap-3">
-          <div className="w-8 h-8 rounded-lg gradient-bg flex items-center justify-center">
-            <WalletIcon className="w-5 h-5 text-white" />
+    <div className="min-h-screen" style={{ backgroundColor: 'var(--bg)' }}>
+      <div className="max-w-md mx-auto px-4 pt-20 pb-24">
+        
+        {/* Profile Header */}
+        <div className="card mb-6" style={{ background: 'linear-gradient(135deg, #1a1a2e 0%, #16213e 100%)' }}>
+          <div className="flex items-center gap-4 mb-6">
+            <div className="w-12 h-12 rounded-full gradient-bg flex items-center justify-center">
+              <span className="text-white font-bold text-lg">W</span>
+            </div>
+            <div>
+              <h2 className="text-xl font-bold text-primary">WeGram</h2>
+              <p className="text-secondary text-sm">@TheWegramApp</p>
+            </div>
           </div>
-          <h1 className="text-xl font-bold text-primary">Solana Wallet</h1>
-        </div>
-      </div>
 
-      {/* No Wallet State */}
-      {!hasWallet && (
-        <div className="card text-center">
-          <div className="w-20 h-20 rounded-full gradient-bg flex items-center justify-center mx-auto mb-6">
-            <WalletIcon className="w-10 h-10 text-white" />
+          {/* Balance Section */}
+          <div className="grid grid-cols-2 gap-6 mb-8">
+            <div>
+              <h3 className="text-secondary text-sm mb-2">Wallet Balance</h3>
+              <div className="flex items-center gap-2">
+                <span className="text-3xl font-bold text-primary">${totalUsdValue.toFixed(0)}</span>
+                <button className="p-1 hover:bg-gray-700 rounded transition-colors">
+                  <RefreshCw className="w-4 h-4 text-secondary" />
+                </button>
+              </div>
+            </div>
+            <div>
+              <h3 className="text-secondary text-sm mb-2">Earnings</h3>
+              <div className="flex items-center gap-2">
+                <span className="text-3xl font-bold text-primary">${earnings}</span>
+                <button className="p-1 hover:bg-gray-700 rounded transition-colors">
+                  <RefreshCw className="w-4 h-4 text-secondary" />
+                </button>
+              </div>
+            </div>
           </div>
-          
-          <h2 className="text-2xl font-bold text-primary mb-2">Solana Wallet</h2>
-          <p className="text-secondary mb-8">Create or import your Solana wallet to get started</p>
 
-          <div className="space-y-4">
+          {/* Action Buttons */}
+          <div className="grid grid-cols-4 gap-4 mb-6">
             <button
-              onClick={() => setShowWalletSetup(true)}
-              className="btn-primary w-full py-4 text-lg font-semibold"
+              onClick={handleDeposit}
+              className="flex flex-col items-center gap-2 p-4 hover:bg-gray-700 hover:bg-opacity-30 rounded-full transition-colors"
             >
-              Get Started
+              <div className="w-12 h-12 rounded-full border border-gray-600 flex items-center justify-center">
+                <ArrowUp className="w-5 h-5" />
+              </div>
+              <span className="text-sm font-medium text-primary">Deposit</span>
+            </button>
+            <button
+              onClick={handleWithdraw}
+              className="flex flex-col items-center gap-2 p-4 hover:bg-gray-700 hover:bg-opacity-30 rounded-full transition-colors"
+            >
+              <div className="w-12 h-12 rounded-full border border-gray-600 flex items-center justify-center">
+                <ArrowDown className="w-5 h-5" />
+              </div>
+              <span className="text-sm font-medium text-primary">Withdraw</span>
+            </button>
+            <button
+              onClick={handleSwap}
+              className="flex flex-col items-center gap-2 p-4 hover:bg-gray-700 hover:bg-opacity-30 rounded-full transition-colors"
+            >
+              <div className="w-12 h-12 rounded-full border border-gray-600 flex items-center justify-center">
+                <RefreshCw className="w-5 h-5" />
+              </div>
+              <span className="text-sm font-medium text-primary">Swap</span>
+            </button>
+            <button
+              onClick={handleMore}
+              className="flex flex-col items-center gap-2 p-4 hover:bg-gray-700 hover:bg-opacity-30 rounded-full transition-colors"
+            >
+              <div className="w-12 h-12 rounded-full border border-gray-600 flex items-center justify-center">
+                <Plus className="w-5 h-5" />
+              </div>
+              <span className="text-sm font-medium text-primary">More</span>
             </button>
           </div>
         </div>
-      )}
 
-      {/* Wallet Dashboard */}
-      {hasWallet && currentWallet && (
-        <div className="space-y-6">
-          {/* Clear Wallet Button */}
-          <div className="card">
-            <div className="flex items-center justify-between">
-              <div>
-                <h3 className="text-primary font-semibold">Reset Wallet</h3>
-                <p className="text-secondary text-sm">Create a new wallet or import a different one</p>
-              </div>
-              <button
-                onClick={() => {
-                  localStorage.removeItem('solana_wallet');
-                  setHasWallet(false);
-                  setCurrentWallet(null);
-                }}
-                className="btn-secondary px-4 py-2"
-              >
-                Reset
-              </button>
-            </div>
-          </div>
-
-          {/* Balance Card */}
-          <div className="card text-center">
-            <div className="mb-4">
-              <div className="text-4xl font-bold text-primary mb-2">{balance} SOL</div>
-              <div className="text-secondary text-sm">≈ $0.00 USD</div>
-            </div>
-            
-            <div className="grid grid-cols-2 gap-3">
-              <button
-                onClick={handleSend}
-                className="btn-primary py-3 flex items-center justify-center gap-2"
-              >
-                <Send className="w-4 h-4" />
-                Send
-              </button>
-              <button
-                onClick={handleReceive}
-                className="btn-secondary py-3 flex items-center justify-center gap-2"
-              >
-                <Download className="w-4 h-4" />
-                Receive
-              </button>
-            </div>
-          </div>
-
-          {/* Wallet Address */}
-          <div className="card">
-            <div className="flex items-center justify-between mb-3">
-              <h3 className="text-primary font-semibold">Wallet Address</h3>
-              <button
-                onClick={() => handleCopy(currentWallet.publicKey, 'address')}
-                className="p-2 hover:bg-gray-600 rounded-lg transition-colors"
-              >
-                {copiedItem === 'address' ? <Check className="w-4 h-4 text-green-400" /> : <Copy className="w-4 h-4" />}
-              </button>
-            </div>
-            <div className="p-3 bg-black bg-opacity-30 rounded-lg font-mono text-sm text-primary break-all">
-              {currentWallet.publicKey}
-            </div>
-          </div>
-
-          {/* Private Key */}
-          <div className="card">
-            <div className="flex items-center justify-between mb-3">
-              <h3 className="text-primary font-semibold">Private Key</h3>
-              <div className="flex gap-2">
-                <button
-                  onClick={() => setShowPrivateKey(!showPrivateKey)}
-                  className="p-2 hover:bg-gray-600 rounded-lg transition-colors"
-                >
-                  {showPrivateKey ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
-                </button>
-                <button
-                  onClick={() => handleCopy(currentWallet.privateKey, 'privateKey')}
-                  className="p-2 hover:bg-gray-600 rounded-lg transition-colors"
-                >
-                  {copiedItem === 'privateKey' ? <Check className="w-4 h-4 text-green-400" /> : <Copy className="w-4 h-4" />}
-                </button>
+        {/* Pending Rewards */}
+        <div className="mb-6 p-6 rounded-2xl" style={{ background: 'linear-gradient(135deg, #7B2CFF 0%, #9945FF 100%)' }}>
+          <div className="flex items-center justify-between">
+            <div>
+              <h3 className="text-white font-semibold mb-2">Pending Rewards</h3>
+              <div className="flex items-center gap-2">
+                <span className="text-2xl">🔷</span>
+                <span className="text-white text-2xl font-bold">{pendingRewards}</span>
               </div>
             </div>
-            <div className="p-3 bg-black bg-opacity-30 rounded-lg font-mono text-sm text-primary break-all">
-              {showPrivateKey ? currentWallet.privateKey : '•'.repeat(88)}
-            </div>
+            <button
+              onClick={handleClaimRewards}
+              className="bg-white bg-opacity-20 hover:bg-opacity-30 text-white px-6 py-3 rounded-full font-medium transition-colors border border-white border-opacity-30"
+            >
+              Wegram Portal
+            </button>
           </div>
+        </div>
 
-          {/* Recovery Phrase */}
-          {currentWallet.mnemonic && (
-            <div className="card">
-              <div className="flex items-center justify-between mb-3">
-                <h3 className="text-primary font-semibold">Recovery Phrase</h3>
-                <button
-                  onClick={() => handleCopy(currentWallet.mnemonic!, 'mnemonic')}
-                  className="p-2 hover:bg-gray-600 rounded-lg transition-colors"
-                >
-                  {copiedItem === 'mnemonic' ? <Check className="w-4 h-4 text-green-400" /> : <Copy className="w-4 h-4" />}
-                </button>
-              </div>
-              <div className="p-3 bg-black bg-opacity-30 rounded-lg text-sm text-primary">
-                {currentWallet.mnemonic}
-              </div>
-            </div>
-          )}
+        {/* Tab Navigation */}
+        <div className="flex border-b border-gray-700 mb-6">
+          <button
+            onClick={() => setActiveTab('tokens')}
+            className={`flex-1 py-3 text-center transition-colors relative ${
+              activeTab === 'tokens' ? 'text-primary' : 'text-secondary'
+            }`}
+          >
+            <span className="font-medium">Tokens</span>
+            {activeTab === 'tokens' && (
+              <div className="absolute bottom-0 left-0 right-0 h-0.5 bg-purple-500"></div>
+            )}
+          </button>
+          <button
+            onClick={() => setActiveTab('tickets')}
+            className={`flex-1 py-3 text-center transition-colors relative ${
+              activeTab === 'tickets' ? 'text-primary' : 'text-secondary'
+            }`}
+          >
+            <span className="font-medium">Tickets</span>
+            {activeTab === 'tickets' && (
+              <div className="absolute bottom-0 left-0 right-0 h-0.5 bg-purple-500"></div>
+            )}
+          </button>
+          <button
+            onClick={() => setActiveTab('activity')}
+            className={`flex-1 py-3 text-center transition-colors relative ${
+              activeTab === 'activity' ? 'text-primary' : 'text-secondary'
+            }`}
+          >
+            <span className="font-medium">Activity</span>
+            {activeTab === 'activity' && (
+              <div className="absolute bottom-0 left-0 right-0 h-0.5 bg-purple-500"></div>
+            )}
+          </button>
+        </div>
 
-          {/* Tokens */}
-          <div className="card">
+        {/* Content based on active tab */}
+        {activeTab === 'tokens' && (
+          <div className="space-y-3">
+            {tokens.map((token) => (
+              <div key={token.symbol} className="card">
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center gap-4">
+                    <div className="w-12 h-12 rounded-full bg-gray-700 flex items-center justify-center text-2xl">
+                      {token.logo}
+                    </div>
+                    <div>
+                      <h3 className="text-primary font-semibold">{token.symbol}</h3>
+                      <p className="text-secondary text-sm">{token.name}</p>
+                    </div>
+                  </div>
+                  <div className="text-right">
+                    <div className="text-primary font-bold">{token.balance.toFixed(4)}</div>
+                    <div className="text-secondary text-sm">${token.usdValue.toFixed(2)}</div>
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+        )}
+
+        {activeTab === 'tickets' && (
+          <div className="text-center py-12">
+            <Ticket className="w-16 h-16 text-gray-600 mx-auto mb-4" />
+            <h3 className="text-primary font-semibold mb-2">No tickets yet</h3>
+            <p className="text-secondary text-sm">Event tickets and NFTs will appear here</p>
+          </div>
+        )}
+
+        {activeTab === 'activity' && (
+          <div className="text-center py-12">
+            <Activity className="w-16 h-16 text-gray-600 mx-auto mb-4" />
+            <h3 className="text-primary font-semibold mb-2">No activity yet</h3>
+            <p className="text-secondary text-sm">Your transaction history will appear here</p>
+          </div>
+        )}
+
+        {/* Wallet Details (Collapsible) */}
+        {walletData && (
+          <div className="mt-8 card">
             <div className="flex items-center justify-between mb-4">
-              <h3 className="text-primary font-semibold">Tokens</h3>
-              <button className="p-2 hover:bg-gray-600 rounded-lg transition-colors">
-                <Plus className="w-4 h-4" />
-              </button>
+              <h3 className="text-primary font-semibold">Wallet Details</h3>
+              <Settings className="w-5 h-5 text-secondary" />
             </div>
-            <div className="text-center py-8 text-secondary">
-              <div className="text-4xl mb-2">🪙</div>
-              <p>No tokens found</p>
-              <p className="text-sm">Tokens will appear here when you receive them</p>
-            </div>
-          </div>
-
-          {/* Transactions */}
-          <div className="card">
-            <h3 className="text-primary font-semibold mb-4">Recent Transactions</h3>
-            <div className="text-center py-8 text-secondary">
-              <div className="text-4xl mb-2">📝</div>
-              <p>No transactions yet</p>
-              <p className="text-sm">Your transaction history will appear here</p>
-            </div>
-          </div>
-        </div>
-      )}
-
-      {/* Wallet Setup Modal */}
-      {showWalletSetup && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black bg-opacity-90 overflow-y-auto">
-          <div className="card max-w-sm w-full my-8 max-h-[90vh] overflow-y-auto">
-            {setupStep === 'choose' && (
-              <>
-                <div className="flex items-center justify-between mb-6">
-                  <h2 className="text-2xl font-bold text-primary">Setup Wallet</h2>
-                  <button
-                    onClick={() => setShowWalletSetup(false)}
-                    className="p-2 hover:bg-gray-700 rounded-lg transition-colors"
-                  >
-                    <X className="w-5 h-5" />
-                  </button>
-                </div>
-                
-                <div className="text-center mb-8">
-                  <div className="w-16 h-16 rounded-full gradient-bg flex items-center justify-center mx-auto mb-4">
-                    <WalletIcon className="w-8 h-8 text-white" />
-                  </div>
-                  <p className="text-secondary">Choose how to set up your Solana wallet</p>
-                </div>
-                
-                <div className="space-y-4">
-                  <button
-                    onClick={generateWallet}
-                    className="btn-primary w-full py-4 text-lg font-semibold"
-                  >
-                    Create New Wallet
-                  </button>
-                  <button
-                    onClick={() => setSetupStep('import')}
-                    className="btn-secondary w-full py-4 text-lg font-semibold"
-                  >
-                    Import Existing Wallet
-                  </button>
-                </div>
-              </>
-            )}
             
-            {setupStep === 'create' && currentWallet && (
-              <>
-                <div className="flex items-center justify-between mb-6">
-                  <button
-                    onClick={() => setSetupStep('choose')}
-                    className="p-2 hover:bg-gray-700 rounded-lg transition-colors"
-                  >
-                    <ArrowLeft className="w-5 h-5" />
-                  </button>
-                  <h2 className="text-xl font-bold text-primary">Wallet Created</h2>
-                  <button
-                    onClick={() => setShowWalletSetup(false)}
-                    className="p-2 hover:bg-gray-700 rounded-lg transition-colors"
-                  >
-                    <X className="w-5 h-5" />
-                  </button>
-                </div>
-                
-                <div className="text-center mb-6">
-                  <div className="w-12 h-12 rounded-full bg-green-600 flex items-center justify-center mx-auto mb-4">
-                    <Check className="w-6 h-6 text-white" />
-                  </div>
-                  <p className="text-secondary text-sm">Save these details securely</p>
-                </div>
-                
-                <div className="space-y-3 mb-6">
-                  <div className="p-3 bg-black bg-opacity-30 rounded-lg">
-                    <div className="flex items-center justify-between mb-2">
-                      <span className="text-secondary text-sm">Address</span>
-                      <button
-                        onClick={() => handleCopy(currentWallet.publicKey, 'address')}
-                        className="p-1 hover:bg-gray-600 rounded transition-colors"
-                      >
-                        {copiedItem === 'address' ? <Check className="w-4 h-4 text-green-400" /> : <Copy className="w-4 h-4" />}
-                      </button>
-                    </div>
-                    <div className="text-primary font-mono text-xs break-all">{currentWallet.publicKey}</div>
-                  </div>
-                  
-                  <div className="p-3 bg-black bg-opacity-30 rounded-lg">
-                    <div className="flex items-center justify-between mb-2">
-                      <span className="text-secondary text-sm">Private Key</span>
-                      <button
-                        onClick={() => handleCopy(currentWallet.privateKey, 'privateKey')}
-                        className="p-1 hover:bg-gray-600 rounded transition-colors"
-                      >
-                        {copiedItem === 'privateKey' ? <Check className="w-4 h-4 text-green-400" /> : <Copy className="w-4 h-4" />}
-                      </button>
-                    </div>
-                    <div className="text-primary font-mono text-xs break-all">{currentWallet.privateKey}</div>
-                  </div>
-                  
-                  {currentWallet.mnemonic && (
-                    <div className="p-3 bg-black bg-opacity-30 rounded-lg">
-                      <div className="flex items-center justify-between mb-2">
-                        <span className="text-secondary text-sm">Recovery Phrase</span>
-                        <button
-                          onClick={() => handleCopy(currentWallet.mnemonic!, 'mnemonic')}
-                          className="p-1 hover:bg-gray-600 rounded transition-colors"
-                        >
-                          {copiedItem === 'mnemonic' ? <Check className="w-4 h-4 text-green-400" /> : <Copy className="w-4 h-4" />}
-                        </button>
-                      </div>
-                      <div className="text-primary text-xs">{currentWallet.mnemonic}</div>
-                    </div>
-                  )}
-                </div>
-                
+            {/* Wallet Address */}
+            <div className="mb-4">
+              <div className="flex items-center justify-between mb-2">
+                <span className="text-secondary text-sm">Wallet Address</span>
                 <button
-                  onClick={finishWalletSetup}
-                  className="btn-primary w-full py-4 text-lg font-semibold"
+                  onClick={() => handleCopy(walletData.publicKey, 'address')}
+                  className="p-1 hover:bg-gray-600 rounded transition-colors"
                 >
-                  Continue to Wallet
+                  {copiedItem === 'address' ? <Check className="w-4 h-4 text-green-400" /> : <Copy className="w-4 h-4" />}
                 </button>
-              </>
-            )}
-            
-            {setupStep === 'import' && (
-              <>
-                <div className="flex items-center justify-between mb-6">
+              </div>
+              <div className="p-3 bg-black bg-opacity-30 rounded-lg font-mono text-xs text-primary break-all">
+                {walletData.publicKey}
+              </div>
+            </div>
+
+            {/* Private Key */}
+            <div className="mb-4">
+              <div className="flex items-center justify-between mb-2">
+                <span className="text-secondary text-sm">Private Key</span>
+                <div className="flex gap-2">
                   <button
-                    onClick={() => setSetupStep('choose')}
-                    className="p-2 hover:bg-gray-700 rounded-lg transition-colors"
+                    onClick={() => setShowPrivateKey(!showPrivateKey)}
+                    className="p-1 hover:bg-gray-600 rounded transition-colors"
                   >
-                    <ArrowLeft className="w-5 h-5" />
+                    {showPrivateKey ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
                   </button>
-                  <h2 className="text-xl font-bold text-primary">Import Wallet</h2>
                   <button
-                    onClick={() => setShowWalletSetup(false)}
-                    className="p-2 hover:bg-gray-700 rounded-lg transition-colors"
+                    onClick={() => handleCopy(walletData.privateKey, 'privateKey')}
+                    className="p-1 hover:bg-gray-600 rounded transition-colors"
                   >
-                    <X className="w-5 h-5" />
+                    {copiedItem === 'privateKey' ? <Check className="w-4 h-4 text-green-400" /> : <Copy className="w-4 h-4" />}
                   </button>
                 </div>
-                
-                <div className="text-center mb-6">
-                  <p className="text-secondary text-sm">Enter your private key or 12-word recovery phrase</p>
+              </div>
+              <div className="p-3 bg-black bg-opacity-30 rounded-lg font-mono text-xs text-primary break-all">
+                {showPrivateKey ? walletData.privateKey : '•'.repeat(88)}
+              </div>
+            </div>
+
+            {/* Recovery Phrase */}
+            {walletData.mnemonic && (
+              <div>
+                <div className="flex items-center justify-between mb-2">
+                  <span className="text-secondary text-sm">Recovery Phrase</span>
+                  <button
+                    onClick={() => handleCopy(walletData.mnemonic!, 'mnemonic')}
+                    className="p-1 hover:bg-gray-600 rounded transition-colors"
+                  >
+                    {copiedItem === 'mnemonic' ? <Check className="w-4 h-4 text-green-400" /> : <Copy className="w-4 h-4" />}
+                  </button>
                 </div>
-                
-                <div className="space-y-4 mb-6">
-                  <textarea
-                    value={importKey}
-                    onChange={(e) => setImportKey(e.target.value)}
-                    placeholder="Enter private key or recovery phrase..."
-                    className="input h-32 resize-none font-mono text-sm"
-                  />
+                <div className="p-3 bg-black bg-opacity-30 rounded-lg text-xs text-primary">
+                  {walletData.mnemonic}
                 </div>
-                
-                <button
-                  onClick={importWallet}
-                  className="btn-primary w-full py-4"
-                  disabled={!importKey.trim() || isLoading}
-                >
-                  {isLoading ? (
-                    <div className="flex items-center justify-center gap-2">
-                      <Loader className="w-4 h-4 animate-spin" />
-                      Importing...
-                    </div>
-                  ) : (
-                    'Import Wallet'
-                  )}
-                </button>
-              </>
+              </div>
             )}
           </div>
-        </div>
-      )}
+        )}
+      </div>
     </div>
   );
 };

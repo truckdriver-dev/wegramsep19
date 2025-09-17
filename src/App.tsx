@@ -34,6 +34,7 @@ import { UserProfile } from './pages/UserProfile';
 import { Messages } from './pages/Messages';
 import { Bookmarks } from './pages/Bookmarks';
 import { PlaceholderPage } from './pages/PlaceholderPage';
+import { Staking } from './pages/Staking';
 
 function AppContent() {
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
@@ -104,7 +105,7 @@ function AppContent() {
           <Route path="/user/:username" element={<UserProfile />} />
           
           {/* Pages that need to be built */}
-          <Route path="/staking" element={<PlaceholderPage title="Staking" description="Stake your WEGRAM tokens to earn rewards" icon={Coins} />} />
+          <Route path="/staking" element={<Staking />} />
           <Route path="/video" element={<PlaceholderPage title="Video" description="Watch and share videos on WEGRAM" icon={Play} />} />
           <Route path="/buy-wegram" element={<PlaceholderPage title="Buy WEGRAM" description="Purchase WEGRAM tokens" icon={ShoppingCart} />} />
         </Routes>

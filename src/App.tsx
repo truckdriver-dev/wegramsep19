@@ -38,6 +38,7 @@ import { Staking } from './pages/Staking';
 import { BuyWegram } from './pages/BuyWegram';
 import { Notifications } from './pages/Notifications';
 import { LaunchToken } from './pages/LaunchToken';
+import { Video } from './pages/Video';
 
 function AppContent() {
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
@@ -112,7 +113,7 @@ function AppContent() {
           
           {/* Pages that need to be built */}
           <Route path="/staking" element={<Staking />} />
-          <Route path="/video" element={<PlaceholderPage title="Video" description="Watch and share videos on WEGRAM" icon={Play} />} />
+          <Route path="/video" element={<Video />} />
           <Route path="/buy-wegram" element={<BuyWegram />} />
           <Route path="/notifications" element={<Notifications />} />
           <Route path="/launch-token" element={<LaunchToken />} />

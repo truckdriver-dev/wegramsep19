@@ -49,6 +49,11 @@ export const Home: React.FC = () => {
     }
   };
 
+  const handleBookmark = async (postId: string) => {
+    // Bookmark functionality - in real app this would save to user's bookmarks
+    console.log('Bookmarking post:', postId);
+    alert('Post bookmarked! 📖');
+  };
   if (loading) {
     return (
       <div className="max-w-md mx-auto px-4 pt-20 pb-24 text-center">
@@ -83,6 +88,7 @@ export const Home: React.FC = () => {
             }}
             onLike={handleLike}
             onGift={handleGift}
+            onBookmark={handleBookmark}
           />
         ))}
       </div>

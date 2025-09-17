@@ -1,5 +1,5 @@
 import React from 'react';
-import { Heart, MessageCircle, Share, MoreHorizontal, Gift } from 'lucide-react';
+import { Heart, MessageCircle, Share, MoreHorizontal, Gift, Bookmark } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { Post } from '../../data/mockData';
 
@@ -9,9 +9,10 @@ interface PostCardProps {
   onReply?: (postId: string) => void;
   onShare?: (postId: string) => void;
   onGift?: (postId: string) => void;
+  onBookmark?: (postId: string) => void;
 }
 
-export const PostCard: React.FC<PostCardProps> = ({ post, onLike, onReply, onShare, onGift }) => {
+export const PostCard: React.FC<PostCardProps> = ({ post, onLike, onReply, onShare, onGift, onBookmark }) => {
   const navigate = useNavigate();
 
   const handleAvatarClick = () => {
@@ -22,6 +23,9 @@ export const PostCard: React.FC<PostCardProps> = ({ post, onLike, onReply, onSha
     onGift?.(post.id);
   };
 
+  const handleBookmark = () => {
+    onBookmark?.(post.id);
+  };
   return (
     <div className="card mb-4">
       <div className="flex items-start justify-between mb-3">
@@ -73,6 +77,12 @@ export const PostCard: React.FC<PostCardProps> = ({ post, onLike, onReply, onSha
         >
           <Gift className="w-4 h-4" />
           <span className="text-sm">{post.gifts || 0}</span>
+        </button>
+        <button
+          onClick={handleBookmark}
+          className="flex items-center gap-2 hover:text-purple-400 transition-colors"
+        >
+          <Bookmark className="w-4 h-4" />
         </button>
       </div>
     </div>

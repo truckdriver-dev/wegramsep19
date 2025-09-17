@@ -39,9 +39,9 @@ export const SideDrawer: React.FC<SideDrawerProps> = ({ isOpen, onClose }) => {
       <div className="absolute inset-0 bg-black bg-opacity-50" onClick={onClose} />
       
       {/* Drawer */}
-      <div className="relative w-80 max-w-sm bg-opacity-95 backdrop-blur-sm" style={{ backgroundColor: 'var(--card)' }}>
+      <div className="relative w-80 max-w-sm bg-opacity-95 backdrop-blur-sm overflow-y-auto" style={{ backgroundColor: 'var(--card)' }}>
         {/* Header with logo */}
-        <div className="p-6">
+        <div className="p-6 pb-20">
           <div className="flex items-center gap-3 mb-8">
             <img 
               src="/src/assets/IMAGE 2025-09-16 17:58:35.jpg" 
@@ -75,11 +75,10 @@ export const SideDrawer: React.FC<SideDrawerProps> = ({ isOpen, onClose }) => {
             );
           })}
         </div>
-
       </div>
       
       {/* Right side content area */}
-      <div className="flex-1 relative">
+      <div className="flex-1 relative" onClick={onClose}>
         {/* Top bar in drawer view */}
         <div className="p-4 flex items-center gap-3">
           <div className="flex-1 relative">
@@ -87,6 +86,7 @@ export const SideDrawer: React.FC<SideDrawerProps> = ({ isOpen, onClose }) => {
               type="text"
               placeholder="Search @handle or posts..."
               className="input pl-4 pr-4 text-sm"
+              onClick={(e) => e.stopPropagation()}
             />
           </div>
           <div className="flex items-center gap-2">
@@ -104,7 +104,7 @@ export const SideDrawer: React.FC<SideDrawerProps> = ({ isOpen, onClose }) => {
         </div>
         
         {/* AI Dot */}
-        <button className="ai-dot">
+        <button className="ai-dot" onClick={(e) => e.stopPropagation()}>
           AI
         </button>
       </div>

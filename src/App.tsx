@@ -66,8 +66,7 @@ function AppContent() {
   };
 
   const handleMessageClick = () => {
-    setMessageRecipient(undefined);
-    setIsMessageModalOpen(true);
+    navigate('/messages');
   };
 
   const handleMessageUser = (username: string) => {

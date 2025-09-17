@@ -33,7 +33,7 @@ export const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose, onAuth })
         <div className="flex items-center justify-between mb-6">
           <div className="flex items-center gap-3">
             <img 
-              src="/src/assets/IMAGE 2025-09-16 17:58:35.jpg" 
+              src="https://i.ibb.co/TxdWc0kL/IMG-9101.jpg"
               alt="WEGRAM Logo" 
               className="w-10 h-10 rounded-xl object-cover shadow-2xl border border-purple-400/30"
             />

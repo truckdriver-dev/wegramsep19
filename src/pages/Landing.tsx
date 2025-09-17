@@ -51,10 +51,20 @@ export const Landing: React.FC = () => {
         {/* CTA Button */}
         <div className="w-full max-w-sm mb-8">
           <button
-            onClick={handleGuestEntry}
+            onClick={() => navigate('/auth')}
             className="w-full bg-gradient-to-r from-cyan-400 to-purple-500 hover:from-cyan-500 hover:to-purple-600 text-white font-semibold py-4 px-6 rounded-full text-lg transition-all transform hover:scale-105 shadow-lg"
           >
-            Enter WEGRAM
+            Enter WEGRAM With 𝕏
+          </button>
+        </div>
+
+        {/* Guest Entry */}
+        <div className="mb-8">
+          <button
+            onClick={handleGuestEntry}
+            className="text-gray-400 hover:text-white transition-colors text-sm underline"
+          >
+            Enter as guest
           </button>
         </div>
 

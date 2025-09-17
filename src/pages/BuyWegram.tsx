@@ -45,7 +45,7 @@ export const BuyWegram: React.FC = () => {
           
           <div className="flex items-center gap-3">
             <img 
-              src="/src/assets/IMAGE 2025-09-16 17:58:35.jpg" 
+              src="https://i.ibb.co/TxdWc0kL/IMG-9101.jpg"
               alt="WEGRAM Logo" 
               className="w-12 h-12 rounded-xl object-cover shadow-2xl border border-purple-400/30"
             />
@@ -58,7 +58,7 @@ export const BuyWegram: React.FC = () => {
           <div className="flex items-center gap-4 mb-6">
             <div className="w-16 h-16 rounded-full gradient-bg flex items-center justify-center">
               <img 
-                src="/src/assets/IMAGE 2025-09-16 17:58:35.jpg" 
+                src="https://i.ibb.co/TxdWc0kL/IMG-9101.jpg"
                 alt="WEGRAM" 
                 className="w-12 h-12 rounded-full object-cover"
               />

@@ -88,7 +88,7 @@ export const Staking: React.FC = () => {
           
           <div className="flex items-center gap-3">
             <img 
-              src="/src/assets/IMAGE 2025-09-16 17:58:35.jpg" 
+              src="https://i.ibb.co/TxdWc0kL/IMG-9101.jpg"
               alt="WEGRAM Logo" 
               className="w-12 h-12 rounded-xl object-cover shadow-2xl border border-purple-400/30"
             />

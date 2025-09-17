@@ -13,12 +13,12 @@ export const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose, onAuth })
 
   const handleGoogleAuth = async () => {
     await signInWithGoogle();
-    onAuth('google');
+    navigate('/landing');
   };
 
   const handleEmailAuth = () => {
     // For now, just close modal - email auth form can be added later
-    onAuth('email');
+    navigate('/landing');
   };
 
   if (!isOpen) return null;

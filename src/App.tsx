@@ -17,6 +17,8 @@ import { MessageModal } from './components/Layout/MessageModal';
 
 // Pages
 import { Home } from './pages/Home';
+import { Landing } from './pages/Landing';
+import { AuthPage } from './pages/AuthPage';
 import { Profile } from './pages/Profile';
 import { Analytics } from './pages/Analytics';
 import { Compose } from './pages/Compose';
@@ -79,6 +81,8 @@ function AppContent() {
       
       <main className="min-h-screen">
         <Routes>
+          <Route path="/landing" element={<Landing />} />
+          <Route path="/auth" element={<AuthPage />} />
           <Route path="/" element={<Home />} />
           <Route path="/profile" element={<Profile />} />
           <Route path="/analytics" element={<Analytics />} />

@@ -99,15 +99,10 @@ export const SideDrawer: React.FC<SideDrawerProps> = ({ isOpen, onClose }) => {
               <RotateCcw className="w-5 h-5" />
             </button>
             <button className="p-2 hover:bg-gray-700 rounded-lg transition-colors">
-              <Grid3X3 className="w-5 h-5" />
+              <Gift className="w-5 h-5" />
             </button>
           </div>
         </div>
-        
-        {/* AI Dot */}
-        <button className="ai-dot" onClick={(e) => e.stopPropagation()}>
-          AI
-        </button>
       </div>
     </div>
   );

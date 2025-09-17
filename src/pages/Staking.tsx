@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { ArrowLeft, DollarSign, TrendingUp, Clock, RefreshCw } from 'lucide-react';
+import { ArrowLeft, DollarSign, TrendingUp, RefreshCw } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 
 export const Staking: React.FC = () => {
@@ -15,7 +15,6 @@ export const Staking: React.FC = () => {
   const portfolioGain = 12.14;
   const dpr = 10.000; // Daily Percentage Rate
   const apr = 8.540; // Annual Percentage Rate
-  const exchangeRate = 5.30; // WGM to SOL rate
 
   // Mock transaction data
   const recentTransactions = [
@@ -77,10 +76,12 @@ export const Staking: React.FC = () => {
 
   return (
     <div className="min-h-screen" style={{ backgroundColor: 'var(--bg)', color: 'var(--text)' }}>
+      <div className="max-w-md mx-auto px-4 pt-20 pb-24">
+        {/* Header */}
+        <div className="flex items-center justify-between mb-8">
           <button
             onClick={() => navigate(-1)}
             className="p-2 hover:bg-gray-700 rounded-lg transition-colors"
-          >
           >
             <ArrowLeft className="w-6 h-6 text-primary" />
           </button>
@@ -93,8 +94,8 @@ export const Staking: React.FC = () => {
             />
             <div className="text-2xl font-bold gradient-text">$WGM</div>
           </div>
-          
-          <div></div> {/* Spacer for center alignment */}
+        </div>
+
         {/* Main Staking Card */}
         <div className="card mb-6">
           <h2 className="text-xl font-semibold mb-6 text-primary">How much $WGM do you want to stake?</h2>
@@ -126,7 +127,7 @@ export const Staking: React.FC = () => {
                 className={`px-4 py-2 rounded-lg border transition-colors ${
                   selectedPercentage === percentage
                     ? 'bg-purple-600 border-purple-600 text-white'
-                    : 'border-white border-opacity-20 hover:border-purple-400'
+                    : 'border-gray-600 hover:border-purple-400 text-primary'
                 }`}
               >
                 {percentage}%
@@ -203,7 +204,7 @@ export const Staking: React.FC = () => {
               </div>
               <span className="text-secondary">→</span>
               <span className="text-primary">SOL</span>
-              <div className="ml-auto text-lg font-semibold text-primary">{exchangeRate}</div>
+              <div className="ml-auto text-lg font-semibold text-primary">5.30</div>
             </div>
           </div>
 
@@ -278,5 +279,6 @@ export const Staking: React.FC = () => {
           </div>
         </div>
       </div>
+    </div>
   );
 };

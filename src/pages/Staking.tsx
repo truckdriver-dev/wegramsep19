@@ -95,8 +95,6 @@ export const Staking: React.FC = () => {
           </div>
           
           <div></div> {/* Spacer for center alignment */}
-        </div>
-
         {/* Main Staking Card */}
         <div className="card mb-6">
           <h2 className="text-xl font-semibold mb-6 text-primary">How much $WGM do you want to stake?</h2>

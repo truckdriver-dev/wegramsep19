@@ -30,6 +30,7 @@ import { Explore } from './pages/Explore';
 import { Games } from './pages/Games';
 import { UserProfile } from './pages/UserProfile';
 import { Messages } from './pages/Messages';
+import { Bookmarks } from './pages/Bookmarks';
 import { PlaceholderPage } from './pages/PlaceholderPage';
 
 function AppContent() {
@@ -90,6 +91,7 @@ function AppContent() {
           
           {/* Full functionality pages */}
           <Route path="/trending" element={<Trending />} />
+          <Route path="/bookmarks" element={<Bookmarks />} />
           <Route path="/explore" element={<Explore />} />
           <Route path="/games" element={<Games />} />
           <Route path="/messages" element={<Messages />} />

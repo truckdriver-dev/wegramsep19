@@ -277,15 +277,8 @@ export const Rewards: React.FC = () => {
                       <h3 className={`font-semibold ${achievement.completed ? 'text-yellow-400' : 'text-primary'}`}>
                         {achievement.title}
                       </h3>
-                      <div className="flex items-center gap-2">
-                        <div className="w-6 h-6 rounded-full bg-gray-700 flex items-center justify-center">
-                          <img 
-                            src="https://i.ibb.co/TxdWc0kL/IMG-9101.jpg"
-                            alt="WEGRAM Logo" 
-                            className="w-4 h-4 rounded-full object-cover"
-                          />
-                        </div>
-                        <span className="text-primary">WGM</span>
+                      <div className="flex items-center gap-1 text-sm">
+                        <Coins className="w-4 h-4 text-green-400" />
                         <span className="text-green-400 font-bold">{achievement.reward}</span>
                       </div>
                     </div>

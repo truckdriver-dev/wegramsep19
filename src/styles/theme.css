@@ -1,5 +1,6 @@
 /* WEGRAM Theme Variables */
 :root {
+  /* Dark mode defaults */
   --bg: #0A0F1D;
   --card: #0F1528;
   --border: #1C2440;
@@ -27,6 +28,34 @@
   --font-base: system-ui, 'SF Pro Display', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Inter', sans-serif;
   --font-size: 14px;
   --line-height: 1.45;
+}
+
+/* Explicit dark theme class (same as :root defaults) */
+.dark {
+  --bg: #0A0F1D;
+  --card: #0F1528;
+  --border: #1C2440;
+  --text: #E6ECFF;
+  --sub: #9AA5C6;
+  --gradA: #00D4FF;
+  --gradB: #9945FF;
+  --accent: #7B2CFF;
+  --glow: rgba(153, 69, 255, 0.4);
+  --error: #FF6B6B;
+}
+
+/* Light theme overrides */
+.light {
+  --bg: #ffffff;
+  --card: #ffffff;
+  --border: #E5E7EB; /* gray-200 */
+  --text: #0F172A; /* slate-900 */
+  --sub: #475569; /* slate-600 */
+  --gradA: #6EE7F9; /* cyan-300 */
+  --gradB: #A78BFA; /* violet-400 */
+  --accent: #7C3AED; /* violet-600 */
+  --glow: rgba(124, 58, 237, 0.25);
+  --error: #DC2626; /* red-600 */
 }
 
 * {
